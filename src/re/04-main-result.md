@@ -22,7 +22,7 @@ All three factors are multiplicatively load-bearing per element (zeroing any col
 
 ### The composition theorem ^thm-composition
 
-> [!theorem] Composition: joint guarantees with conditional cumulative reduction ^thm-composition-statement
+> [!theorem] Composition: joint guarantees with conditional cumulative reduction ^thm-composition
 > Let $(\mathcal S, \mathcal A, P_t, r_t, N_h)$ be a non-stationary MDP with bounded reward, finite action space, and for each round $t$ a deterministic optimum policy $\pi^*_t = \delta_{a^*_t}$ with action gap $\Delta_{\min} > 0$. Suppose the agent operates on a singular causal trajectory in the sense of [[#^sec-preliminaries]] and updates its policy with per-element exponential forgetting at rates $\{\lambda_{ij}\}$. Let $K_t(s) := D_{\mathrm{KL}}(\delta_{a^*_t(s)} \,\|\, Q_t(\cdot \mid s))$ be the per-state reverse-KL coordinate (in the bandit case $N_h=1$ the state argument is suppressed). If
 >
 > **(A1) Metric on policy space.** $Q_t(a^*_t \mid s) > 0$ at every visited state and round.
@@ -52,7 +52,7 @@ The proof composes the per-round identity (i) with the simulation lemma \cite{ka
 
 ### Unpacking the conclusions ^sec-unpacking
 
-Theorem [[#^thm-composition]] asserts that the four components compose into a non-stationarity-aware convergence theory with three properties that no existing strand has individually: it *handles non-stationarity* (via (ii)/(A2)), has *explicit metric structure on policy space* (via (i)/Component 2), and is *learnable on-policy* (via (iii)/(A3)). Conclusion (iv) is the connective tissue routing corrective action; conclusion (v) is the cumulative regret rate that follows from composing the per-round metric coordinate with the base-learner stationary rate.
+[[#^thm-composition]] asserts that the four components compose into a non-stationarity-aware convergence theory with three properties that no existing strand has individually: it *handles non-stationarity* (via (ii)/(A2)), has *explicit metric structure on policy space* (via (i)/Component 2), and is *learnable on-policy* (via (iii)/(A3)). Conclusion (iv) is the connective tissue routing corrective action; conclusion (v) is the cumulative regret rate that follows from composing the per-round metric coordinate with the base-learner stationary rate.
 
 We emphasize four things about this theorem.
 

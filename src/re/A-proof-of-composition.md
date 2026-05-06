@@ -1,6 +1,6 @@
 ## Proof of the Composition Theorem ^sec-proof-composition
 
-This appendix gives the full proof of Theorem [[#^thm-composition]]. The proof composes the four key lemmas of [[#^sec-mechanism]] (full proofs of those in [[#^sec-key-lemma-proofs]]) with a block decomposition at optimum-change events plus Cauchy–Schwarz across blocks.
+This appendix gives the full proof of [[#^thm-composition]]. The proof composes the four key lemmas of [[#^sec-mechanism]] (full proofs of those in [[#^sec-key-lemma-proofs]]) with a block decomposition at optimum-change events plus Cauchy–Schwarz across blocks.
 
 **Notation.** Throughout this section: $K_t(s) := D_{\mathrm{KL}}(\delta_{a^*_t(s)} \,\|\, Q_t(\cdot \mid s))$ is the per-state reverse-KL coordinate; $d^{Q_t}_h(\cdot \mid s_0)$ is the round-$t$ learner-induced state distribution at horizon step $h$ starting from $s_0$; $\overline{\mathrm{TV}}_t := \tfrac{1}{N_h} \sum_{h=0}^{N_h-1} \mathbb E_{s_h \sim d^{Q_t}_h}[\operatorname{TV}(\pi^*_t(\cdot \mid s_h), Q_t(\cdot \mid s_h))]$ is the occupancy-weighted per-round coordinate of (A5); $B_T = |\{t : a^*_t \ne a^*_{t-1}\}|$ counts optimum-change events; the partition is $0 = \tau_0 < \tau_1 < \cdots < \tau_{B_T} \le \tau_{B_T+1} = T$ with block $i$ length $\Delta_i := \tau_{i+1} - \tau_i$.
 
@@ -20,7 +20,7 @@ Key Lemma 4 ([[#^lem-bias-bound]], full proof in [[#^sec-proof-key-lemma-4]]) gi
 
 ### Proof of (iv) — 2$\times$2 corrective-action routing
 
-(A4) states the agent applies the satisfaction-gap / control-regret 2$\times$2 (Section [[#^sec-four-components]] Component 1). Conclusion (iv) is a direct restatement of the 2$\times$2 cell partition. The decomposition is convention-dependent (the values of $\delta_{\mathrm{sat}}$ and $\delta_{\mathrm{regret}}$ depend on the continuation convention; see [[#^sec-aux-conventions]] for monotonicity across C1/C2/C3); the 2$\times$2 *structure* is preserved across all three conventions. $\square$
+(A4) states the agent applies the satisfaction-gap / control-regret 2$\times$2 ([[#^sec-four-components]] Component 1). Conclusion (iv) is a direct restatement of the 2$\times$2 cell partition. The decomposition is convention-dependent (the values of $\delta_{\mathrm{sat}}$ and $\delta_{\mathrm{regret}}$ depend on the continuation convention; see [[#^sec-aux-conventions]] for monotonicity across C1/C2/C3); the 2$\times$2 *structure* is preserved across all three conventions. $\square$
 
 ### Proof of (v) — Trajectory-level cumulative regret
 

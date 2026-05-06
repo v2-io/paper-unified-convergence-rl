@@ -4,18 +4,14 @@
 
 ---
 
-## Migration in-flight (agent #2, 2026-05-05)
+## Migration milestones (agent #2, 2026-05-05) — landed
 
-Working tasks tracked in the agent's TaskList. Milestones surface here once landed and tracked durably:
-
-- [x] Scaffolding milestone (dirs + .gitignore + meta.md + LOG.md + this file).
-- [ ] Body segments §1–§9 from `paper-draft.md` → `src/01-introduction.md` ... `src/09-limitations-conclusion.md`. Default boundary: one segment per top-level section.
-- [ ] Appendix segments A–G → `src/A-supporting-material.md` (with A.1–A.8 sub-headings) + `src/B-pinsker-numerics.md` + `src/C-chain-rule-uniqueness.md` + `src/D-prior-art-summary.md` + `src/E-algorithm-sketch.md` + `src/F-bias-bound.md` + `src/G-proof-sketches.md`.
-- [ ] Manifests: `OUT.full-paper.md` (everything) + `OUT.neurips-2026-paper.md` (9pp budget — same segments, with §A.4 / §A.7 / §A.8 commented out via `<!-- | ... | -->` per AUTHORING §7.2).
-- [ ] Citation migration via `bin/migrate-cites` (signed off per `PIPELINE-TODO.md §C1.4`). Pilot on §1 first; bulk-apply per segment; ambiguous matches and missing keys flagged below.
-- [ ] Build verification: `bin/build 02-unified-convergence-rl OUT.full-paper.md` + `OUT.neurips-2026-paper.md`. Visual confirm.
-- [ ] `prior-art/` port from old workspace (`query.md`, `report.md`, `positioning.md`).
-- [ ] Final commit + push to `v2-io/paper-unified-convergence-rl`.
+- [x] **Scaffolding** — dirs + `.gitignore` + `meta.md` + `LOG.md` + this file. Commit `9dd4cd7`.
+- [x] **Body segments §1–§9 + references** — `src/01-introduction.md` ... `src/10-references.md`, one segment per top-level section. Inline-bold theorem pattern → Obsidian callouts. Heading-prefix numbering stripped. `\tag{P}` converted to anchored `^eq-persistence-condition`. Cross-refs via `[[#^anchor]]`. Pass-5 (a)(i) and (a)(v) coherence drifts left as `> [!todo]` callouts in §1.1 / §9.1 / §9.3 for per-paper agent. **§8 row 3 cross-reference bug** (source's "(§5.5)" → migrated as `[[#^sec-prost-lift]]` which renders "Section 5.4" correctly; bug item below resolved as a side-effect of anchor-based refs). Commit `14672ef`.
+- [x] **Appendix segments A–G + manifests** — `src/A-supporting-material.md` (with A.1–A.8 sub-headings) + `src/B-pinsker-numerics.md` + `src/C-chain-rule-uniqueness.md` + `src/D-prior-art-summary.md` + `src/E-algorithm-sketch.md` + `src/F-bias-bound.md` + `src/G-proof-sketches.md`. `OUT.full-paper.md` (everything) + `OUT.neurips-2026-paper.md` (9pp draft cut — appendix B/C/D/E commented out via `<!-- ... -->` per AUTHORING §7.2; A and F kept as load-bearing; G kept for main proofs). Manifest narrative explains the cut rationale and flags within-segment compression as per-paper-agent territory. Commit `7832b79`.
+- [x] **Citation migration** — `bin/migrate-cites --apply` rewrote 22 single-cite occurrences across 10 segments. Multi-cite groups `[A Year; B Year; ...]` intentionally skipped by the migrate-cites regex (per PIPELINE-TODO §C1.4); per-paper agent hand-converts those. One missing entry surfaced: `[Zhang-Bareinboim 2022]` in §D needs `bin/refs add junzhe-zhang-bareinboim-2022-online`. Commit `2f9d466`.
+- [x] **`prior-art/` ported** — `query.md`, `report.md`, `positioning.md` copied verbatim from `~/src/neurips2026/02-convergence/prior-art/`.
+- [ ] **Build verification — blocked.** `bin/build 02-unified-convergence-rl OUT.full-paper.md` failed at lualatex pass 1 with three kramdown-converter rendering bugs filed at umbrella `PIPELINE-TODO.md ## Inbox` (commit `654da9c`): (1) bold-prefix paragraph + immediately-following `$$display$$` math emits unbalanced `\begin{equation}…$$`; (2) `[[#^anchor]](text)` parses as markdown link `[label](url)`; (3) unescaped `|…|` in inline math triggers kramdown table parser. Build verification waits on pipeline-owner fixes. Per-paper agent should re-run `bin/build` once the inbox bugs land as `RESOLVED-IN-<commit>`.
 
 ---
 
@@ -26,7 +22,7 @@ Captured here so the per-paper agent has a clean handoff. Migration agent #2 lea
 ### (a) Coherence drifts (integration bugs from Pass-4 spike-N1/N2 landing)
 
 - [ ] **$N_h$ horizon factor not propagated** — abstract, §1.1 (iv) bullet, §9.3 conclusion still carry pre-strengthen rate $O(V_{\max}\sqrt{(B_T+1)T})$; §7.1(v) and `meta.md` abstract (mirroring submission) currently lack the $N_h$ factor that landed in body Theorem 7.1(v) proof. Abstract is locked at OpenReview but body can be updated until May 6 AOE — body fix is a one-line addition; abstract+conclusion should follow in body for consistency.
-- [ ] **§8 row 3 cross-reference bug** — Related Work table row 3 references "(§5.5)"; the §5.5 lift content now lives in §5.4 after structural-move B renumbering. One-character fix.
+- [x] **§8 row 3 cross-reference bug** — Resolved as a side-effect of migrating "(§5.5)" → `[[#^sec-prost-lift]]`, which cleveref renders to "Section 5.4" correctly. Anchor-based cross-references self-heal under renumbering.
 - [ ] **$K_t$ vs $K_t(s)$ notational inconsistency** — Theorem 7.1 line 303 defines $K_t$ as per-round; conclusion (v) line 330 defines $K_t(s)$ as per-state. Both labeled $K_t$ in different places; annotate per-round form as the per-state generalization, or drop the line-303 alias.
 - [ ] **$p_{\rm id}$ scope inconsistency** — body Theorem 7.1(v) treats $p_{\rm id}$ as scalar; Appendix F line 671 introduces *per-state* $p_{\rm id}(s_h)$ with min-over-states convention. Surface min-over-states scope in the body theorem rather than burying in appendix.
 - [ ] **"Directed-separation" anonymization hit** — §9.1, line 371 of source paper-draft.md: `Theorem 6.1's loop-Level-2 claim depends on a directed-separation property between $M_t$ and goal state`. Same vocab-priming risk B-N8 already swept (commit `0aa533f`). Reframe as `architectural-separation property` or `conditional-independence property`. **Hard required before any submission build.**
@@ -75,11 +71,24 @@ Deadline-permitting; per-paper-agent territory.
 
 ---
 
-## Citation migration — pending and ambiguous matches
+## Citation migration — remaining work for per-paper agent
 
-*Populated as `bin/migrate-cites` runs surface them. Hyphenated multi-author keys (Cheung-Simchi-Levi-Zhu, Long-Fei Li-Zhao-Zhou, Bareinboim-Correa-Ibeling-Icard, Anderson-Moore) are the trickiest pattern; same-year ambiguities likely on Lee 2023/2024.*
+After `bin/migrate-cites --apply` (commit `2f9d466`):
 
-(Empty until migration runs.)
+**Multi-cite groups still in `[Author Year; Author Year]` form** — skipped by migrate-cites' regex per PIPELINE-TODO §C1.4 (intentional: the tool can't reliably auto-disambiguate the right `\cite{}` form for `[A Year; B Year]`). Hand-convert these per-paper-agent. They appear in:
+- §1 — multiple multi-cite groups in opening paragraphs (~5 groups).
+- §2 — one or two cross-references with multi-cite (`[Cheung-Simchi-Levi-Zhu 2020; Wei-Luo 2021]`).
+- §4, §5, §6, §7, §8, §9 — scattered `[Author Year; Author Year]` patterns.
+- §A — `[Hespanha–Liberzon–Teel 2008, Theorem 1, ...]`-shaped page-ref forms.
+- §E — multiple multi-cites.
+- §G — `[Kakade–Langford 2002; Munos 2003; Ross–Bagnell 2010; Azar–Osband–Munos 2017]`.
+
+The bib database has all entries needed (per dry-run; only one missing — see below). Each multi-cite converts to `\cite{key1, key2, ...}` with natbib's `sort&compress` collapsing runs to ranges.
+
+**Missing bib entry — needs `bin/refs add` before final build.**
+- `[Zhang-Bareinboim 2022]` in `src/D-prior-art-summary.md` — paper-draft.md references list calls it "Junzhe Zhang, Bareinboim, E. (2022). Online RL for mixed policy scopes. *NeurIPS*." — proposed key `junzhe-zhang-bareinboim-2022-online` (matches the existing `bareinboim-correa-ibeling-icard-2022-pearl-hierarchy` naming convention).
+
+**Citation verification (per AUTHORING §3.9 Code-of-Conduct grade).** All ~70 cites need `bin/refs verify` before any submission build. Source paper's spike-citation-verification (2026-05-05) caught the Hosseini-Hsu-Taghvaei 2023 hallucination → replaced with Sprungk 2019; that fix is preserved here. Re-verification of the 164 imported bib entries is umbrella-level work (PIPELINE-TODO §F5).
 
 ---
 

@@ -41,3 +41,9 @@
 <!-- | E | Appendix | [algo](src/E-algorithm-sketch.md) | Sketch of an Algorithm Achieving Theorem 7.1 | draft | -->
 | F | Appendix | [bias](src/F-bias-bound.md) | Bias Bound for the KL-Coordinate Under Partial Identifiability | draft |
 | G | Appendix | [proofs](src/G-proof-sketches.md) | Proof Sketches for Theorem 5.1 and Theorem 7.1(v) | draft |
+
+## Checklist
+
+| § | Type | Slug | Title | Stage |
+|---|------|------|-------|-------|
+| – | Checklist | [checklist](src/checklist.tex) | NeurIPS paper checklist | draft |

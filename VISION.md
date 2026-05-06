@@ -40,7 +40,7 @@ The work is organized as a multi-step refactor. We're not editing the current `s
 
 2. **Strengthens cheatsheet.** A small markdown doc listing the post-Pass-N strengthens that must be preserved when integrating recovered prose: BH-renaming → point-mass-identity, single-factor → multi-factor strategic tempo, K/T → impulsive Δ_max-condition (Lemma 5.2), A_accum → A_decay class theorem, perturbative Theorem 4.3, the spike-N1 N_h horizon factor, the spike-N2 reverse-ADT framing. When recovered prose carries an older / weaker framing, the strengthen wins; recovery is *prose recovery*, not claim recovery.
 
-3. **Read Jin 2020 first-hand.** `spikes/paper_structure/1907.05388/mainQlin.tex` and the supporting files. Internalize the *feel* — what the body does, what Remarks-after-theorems actually look like, where proof sketches sit, what gets formal-restated in appendix vs. main. The strategy doc summarizes this; the actual paper is the calibration tool.
+3. **Read both exemplars first-hand.** Jin 2020 at `spikes/paper_structure/1907.05388/` (`mainQlin.tex` + supporting files); Jin 2018 at `spikes/paper_structure/1807.03765/`. The upgraded `OUTLINE-STRATEGY.md` (2026-05-06) at the umbrella root provides 24 concrete LaTeX excerpts illustrating each move (narrative gap setup, informal main result, conceptual related-work grouping, rigorous-yet-readable assumptions, algorithm/main-result intuition, "unpacking" narrative remarks, proof-sketch-as-story, plain-English explanation of algebraic steps, key-lemma surfacing, conclusion takeaways, appendix structure). Treat the 24 examples as a *pattern library* when authoring `src/re/`. The actual papers are the feel-check; the strategy doc tells you which moves to imitate where.
 
 4. **New outline.** `OUTLINE-RESTRUCTURED.md` (or similar). Drafted from steeping in the theory + the Jin-2020 calibration + the recovered material. Body shape, appendix shape, key-lemma list, where Remarks land, what the headline informal theorem is. Surface to Joseph for review before authoring against it.
 
@@ -73,6 +73,8 @@ These are the spike / audit results that the current strong claims rest on. Pull
 - The current `src/` segments are the trim-survivor (commit `8d82b13`). Don't edit in place during the refactor; author `src/re/` parallel.
 - The build pipeline (`bin/build`) is being actively improved at the umbrella; pipeline-side issues go to `PIPELINE-TODO.md ## Inbox` via atomic append (`AGENTS.md` §5.1).
 - **The temptation when stuck or under perceived time pressure is to fall back into compression-thinking.** That's the failure-mode signal. When you notice it, return to the reframe: *where does this want to live?*
+- The upgraded `OUTLINE-STRATEGY.md` is the calibration map. The 24 examples are the *patterns to imitate* — not just principles to follow. When authoring a new section in `src/re/`, ask: which example is this section closest to? What does that example DO, structurally and rhetorically? Imitate the move, not just the rule.
+- Wisdom-layer specifics from the upgraded strategy that are easy to under-do: (a) "unpacking" after a theorem is *narrative paragraphs*, not bulleted Remarks; (b) proof-sketch sections tell *a story* with obstacles and resolutions, not just a list of lemmas; (c) algebraic steps in main text are *explained in plain English*, with the algebra itself in the appendix; (d) conclusions enumerate *practitioner takeaways* rather than restate the abstract; (e) limitations are *honest open discussion* of what's open, not a scope list.
 
 ---
 

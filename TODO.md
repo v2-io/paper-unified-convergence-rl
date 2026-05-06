@@ -4,6 +4,14 @@
 
 ---
 
+## Inbox — flagged 2026-05-06 by build-pipeline agent
+
+**Page-budget reality check.** `bin/build 02-unified-convergence-rl neurips-2026-paper` currently produces a 22-page PDF; main text (§1–§9) ends at page 12, References starts at page 13. That's **3 pages over** the 9-page main-text limit — the existing manifest already comments out appendices B/C/D/E but the body is still long. The migration agent's earlier note ("9pp draft cut … A and F kept as load-bearing; G kept for main proofs") was about appendix selection; main-text trim hasn't happened yet. Suggested next: either (i) deeper segment-level compression (the OUTLINE risk register identified candidates: §6.1 fold to footnote, §6.5 collapse to paragraph, §5.7/§5.8 unify, §5.6 Theorem 5.5 to Appendix C), or (ii) commit to a heavier appendix shift. Please verify the actual numbers via `pdfinfo out/neurips-2026-paper.pdf` and update the OUTLINE before deciding.
+
+**Bold-prefix vs callout form — verify intentional.** `src/A-supporting-material.md:21` uses `**Corollary.** $\delta_{\mathrm{sat}}^{\mathrm B} \le \dots$` as a paragraph-prefix. AUTHORING §1.1 prefers Obsidian `> [!corollary] ^anchor` for theorem-shaped semantic blocks; AUTHORING §1.9 allows bold-prefix for plain paragraph headings. The corollary at line 21 has no number and no cross-ref, so bold-prefix may be intentional — but if the claim is referenced anywhere or warrants a numbered counter, it should move to a callout. Quick read: if `\Cref{cor-…}` is wanted, convert; otherwise leave.
+
+---
+
 ## Migration milestones (agent #2, 2026-05-05) — landed
 
 - [x] **Scaffolding** — dirs + `.gitignore` + `meta.md` + `LOG.md` + this file. Commit `9dd4cd7`.

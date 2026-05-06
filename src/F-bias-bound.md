@@ -1,0 +1,25 @@
+## Bias Bound for the KL-Coordinate Under Partial Identifiability ^sec-bias-bound
+
+We establish conclusion (iii) of [[#^thm-composition]]: under the agent's argmax-misidentification probability $1 - p_{\mathrm{id}}$, the KL coordinate computed against the *agent-identified* optimum has bias controlled linearly by $1 - p_{\mathrm{id}}$.
+
+**Setup and notation.** $Q_t(a)$ is the agent's policy distribution, internally available at every round (a deterministic function of the agent's state). The KL coordinate $D_{\mathrm{KL}}(\delta_{a^*_t} \,\|\, Q_t) = -\log Q_t(a^*_t)$ is computable directly from $Q_t$ and a chosen $a^*_t$ — no empirical visit-frequency estimator is needed. The non-trivial question is *which $a^*_t$ to use*: the agent uses its *identified* optimum $a^*_{\mathrm{ag},t} := \arg\max_a Q_O(M_t, a)$, computed under the agent's current model $M_t$. The *true* optimum (under intervention on the environment) is $\tilde a^*_t := \arg\max_a Q_O^{\mathrm{true}}(a)$.
+
+**Identifiability-to-identification gap.** The per-edge identifiability coefficient $\iota_{ij} \in [0,1]$ defined in [[#^sec-tempo-forms]] measures the fraction of evidence that identifies the causal effect at element $(i,j)$. The argmax-correctness probability $p_{\mathrm{id}} := \Pr[a^*_{\mathrm{ag},t} = \tilde a^*_t]$ measures how often the agent's identified optimum matches the true optimum. These are related but not equal in general: argmax-correctness depends on which edges are pivotal for the optimum's identity. In the simplest case (single revisable edge, or where one edge dominates the action ranking), $p_{\mathrm{id}} = \iota$. More generally a connecting lemma relating per-edge $\iota_{ij}$ to argmax correctness depends on the policy DAG structure; we treat $p_{\mathrm{id}}$ as the operative quantity for the bias bound and note its equality with $\iota$ in the simple-bandit case.
+
+> [!theorem] Bias bound, high-probability form ^thm-bias-bound
+> Assume $Q_t(a) \ge q_0 > 0$ for both $a = a^*_{\mathrm{ag},t}$ and $a = \tilde a^*_t$. Let $\hat D_t := -\log Q_t(a^*_{\mathrm{ag},t})$ and $D^{\mathrm{true}}_t := -\log Q_t(\tilde a^*_t)$. Then
+> $$\bigl|\hat D_t - D^{\mathrm{true}}_t\bigr| \le \mathbf 1[a^*_{\mathrm{ag},t} \ne \tilde a^*_t] \cdot \log(1/q_0).$$
+> Taking expectations:
+> $$\mathbb E\bigl[|\hat D_t - D^{\mathrm{true}}_t|\bigr] \le (1 - p_{\mathrm{id}}) \log(1/q_0).$$
+> With probability $1 - \delta$ over a single round's identification event:
+> $$\bigl|\hat D_t - D^{\mathrm{true}}_t\bigr| \le \log(1/q_0) \cdot \mathbf 1[\mathrm{misid event}], \quad \Pr[\mathrm{misid event}] = 1 - p_{\mathrm{id}}.$$
+
+> [!proof]
+> On the event $\{a^*_{\mathrm{ag},t} = \tilde a^*_t\}$, the two quantities are equal so the difference vanishes. On the complementary misidentification event, both $\log Q_t(a^*_{\mathrm{ag},t})$ and $\log Q_t(\tilde a^*_t)$ lie in $[\log q_0, 0]$, so their absolute difference is at most $\log(1/q_0)$. The expectation bound follows by definition of $p_{\mathrm{id}}$.
+
+**Remarks.**
+- Both $a^*_{\mathrm{ag},t}$ and $\tilde a^*_t$ must satisfy $Q_t(\cdot) \ge q_0$ for the $\log(1/q_0)$ ceiling to apply; the support condition is on *both* points, not just the agent's estimate.
+- When $a^*_{\mathrm{ag},t}$ tracks $\tilde a^*_t$ well ($p_{\mathrm{id}} \to 1$, Regime A), the bias vanishes; Regime B has bias controlled by misidentification mass; Regime C ($p_{\mathrm{id}} \approx 0$) has bias up to $\log(1/q_0)$.
+- This is *not* an estimation-from-samples lemma. If $Q_t$ is unavailable internally and must be estimated from on-policy rollouts, an additional concentration argument (Hoeffding under iid fixed-policy samples, or martingale concentration for adaptive policies) is needed; in the architectures this paper considers, $Q_t$ is the agent's policy and is internally available.
+
+**Per-state, per-horizon-step lift (used in [[#^thm-composition]](v)).** F.1 applies pointwise at any visited state $s_h$ along a horizon-$N_h$ trajectory: $\mathbb E[|\hat D_t(s_h) - D^{\mathrm{true}}_t(s_h)|] \le (1 - p_{\mathrm{id}}(s_h))\log(1/q_0)$, with $p_{\mathrm{id}}(s_h)$ the per-state argmax-correctness probability. Aggregating linearly over the horizon and assuming a uniform per-state argmax-correctness floor $p_{\mathrm{id}} := \min_s p_{\mathrm{id}}(s)$, the per-round bias contribution to the trajectory-level value gap is at most $N_h(1 - p_{\mathrm{id}})\log(1/q_0)$, contributing the second term of [[#^thm-composition]](v).

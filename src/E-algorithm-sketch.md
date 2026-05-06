@@ -1,0 +1,15 @@
+## Sketch of an Algorithm Achieving Theorem 7.1 ^sec-algorithm-sketch
+
+A practical algorithm achieving the joint guarantees of [[#^thm-composition]] requires:
+
+**(a) Base learner achieving identity-tight occupancy-weighted coordinate (up to log factors).** In the stationary deterministic-$\pi^*$ bandit case ($N_h = 1$), Thompson sampling [Russo–Van Roy 2014a] and UCB [Lattimore–Szepesvári 2020] both achieve the per-round coordinate
+$$\mathbb E\!\left[1 - e^{-K_t}\right] \;=\; \mathbb E[1 - Q_t(a^*)] \;=\; O\!\left(\frac{\log t}{t \,\Delta_{\min}}\right),$$
+matching the identity form $V_{\max}(1 - e^{-D_{\mathrm{KL}}})$ of [[#^thm-twosided-regret]] up to constants and a $\log t$ factor. This satisfies (A5) of [[#^thm-composition]] with the stronger logarithmic rate, yielding cumulative dynamic regret $O(V_{\max} (B_T+1) \log^2(T/(B_T+1)) / \Delta_{\min})$. For $N_h > 1$ MDPs, UCRL2 [Auer–Jaksch–Ortner 2010] and UCBVI [Azar–Osband–Munos 2017] give per-block cumulative trajectory-level regret $\tilde O(N_h^{3/2}\sqrt{SA L})$ with $S, A$ the state/action sizes; rewriting in the occupancy-weighted coordinate satisfies (A5) with $c$ of order $\tilde O(\sqrt{N_h SA})$, lifting cleanly to the $\tilde O(N_h^2 \sqrt{SA(B_T+1)T})$ cumulative rate of the main remark — matching the structural shape of [Mao–Zhang–Zhu–Simchi-Levi–Başar 2021]'s near-optimal non-stationary RL bound. The occupancy-weighted form is the natural object for trajectory-level base learners; the per-state KL/TV identity is preserved underneath. Information-directed sampling [Russo–Van Roy 2014b] requires a different analysis here because $H(\pi^*) = 0$ collapses its information ratio; we leave the IDS analysis as future work.
+
+**(b) Multi-factor forgetting schedule.** Choose per-element discount rates $\{\lambda_{ij}\}$ such that the bottleneck $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \min_{(i,j)} \nu_{ij}\iota_{ij}(1-\lambda_{ij})$ exceeds $\rho_\Sigma / R_\Sigma$. When $\rho_\Sigma$ is unknown, the [Wei–Luo 2021] black-box reduction gives an adaptive choice (applied per element if heterogeneous); when $\rho_\Sigma$ is known via a variation-budget [Cheung et al.\ 2020], the choice is direct. As a fail-fast pre-check, $\mathcal T_\Sigma^{\mathrm{agg,ss}} > |E| \cdot \rho_\Sigma / R_\Sigma$ is necessary.
+
+**(c) Identifiability check.** Test whether the loop data is in Regime A (full identifiability), Regime B (partial), or Regime C (none). In Regime A, no adjustment is needed. In Regime B, apply [Wang-Yang-Wang 2020 DOVI]-style confounding-bias adjustment. In Regime C, the bound is provable but not realizable; algorithm flags the regime as out-of-scope.
+
+**(d) Two-gap diagnostic readout.** Compute $\delta_{\mathrm{sat}}$ (requires $A_O$, intractable in general; estimable via the policy-class supremum over recent rounds) and $\delta_{\mathrm{regret}}$ (requires $V_O$ at current policy; tractable in simulation). Route to corrective action class.
+
+The algorithm is sketch-grade; full instantiation and empirical evaluation are deferred to a follow-up paper.

@@ -36,6 +36,10 @@ If a future agent (or future-me) finds themselves reaching for "compression" / "
 
 The work is organized as a multi-step refactor. We're not editing the current `src/` in place — we're authoring a parallel restructured version in `src/re/`, swapping manifests when ready.
 
+**As of 2026-05-06, the `src/re/` restructure draft exists end-to-end** (commit `1d201f6`). Body §1–§6 (~8pp target) plus Appendices A–F build clean to `out/full-paper-re.pdf` (33pp). The current `src/` (the migration trim-survivor) coexists; both manifests build. The draft answers each of the six weigh-in questions from `OUTLINE-RESTRUCTURED.md` by trying the natural choice — Jin-style mechanism (Q1), dual-anchor headline (Q2), strict-minimalist preliminaries (Q3), one segment per top-level appendix with internal sub-sections (Q4), all four key lemmas surfaced in §5 (Q5), both observations and takeaways in §6 (Q6). Easy to revise any of these now that the prose exists. Joseph's review of the draft is the next decision point.
+
+The remaining steps:
+
 1. **Recover prose.** `src/_recovery/` (orphan segments, not in any manifest). Wholesale port of `~/src/neurips2026/02-convergence/long-form.md` (890 lines vs paper-draft's 696 — the delta is mostly living prose that didn't survive compression) plus surgical pulls from earlier `paper-draft.md` git revisions (pre Pass-2, pre Pass-3, etc.) where motivation paragraphs got compressed away. Filenames preserve provenance.
 
 2. **Strengthens cheatsheet.** A small markdown doc listing the post-Pass-N strengthens that must be preserved when integrating recovered prose: BH-renaming → point-mass-identity, single-factor → multi-factor strategic tempo, K/T → impulsive Δ_max-condition (Lemma 5.2), A_accum → A_decay class theorem, perturbative Theorem 4.3, the spike-N1 N_h horizon factor, the spike-N2 reverse-ADT framing. When recovered prose carries an older / weaker framing, the strengthen wins; recovery is *prose recovery*, not claim recovery.

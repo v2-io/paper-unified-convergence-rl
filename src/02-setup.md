@@ -9,7 +9,7 @@ $$V_T \;:=\; \sum_{t=1}^{T-1} \max\!\Bigl\{ \sup_{s,a} \|P_{t+1}(\cdot \mid s, a
 
 **Value object.**
 $$V_O(M_t, \pi;\, N_h) \;=\; \mathbb E[V_O(\tau_{t:t+N_h}) \mid M_t, \pi], \qquad Q_O(M_t, a;\, \pi_{\mathrm{cont}}, N_h) \;=\; \mathbb E[V_O(\tau) \mid M_t,\, do(a_t = a),\, a_{t+1:} \sim \pi_{\mathrm{cont}}].$$
-The $do(\cdot)$ [Pearl 2009] flags intervention on $a_t$ rather than conditioning. Default continuation: **one-step improvement** $\pi_{\mathrm{cont}} = \pi_{\mathrm{current}}$ — most conservative, comparable across rounds, fixed-point-free; receding-horizon and Bellman alternatives in [[#^sec-convention-hierarchy]].
+The $do(\cdot)$ \cite{pearl-2009-causality} flags intervention on $a_t$ rather than conditioning. Default continuation: **one-step improvement** $\pi_{\mathrm{cont}} = \pi_{\mathrm{current}}$ — most conservative, comparable across rounds, fixed-point-free; receding-horizon and Bellman alternatives in [[#^sec-convention-hierarchy]].
 
 **Bounded value range.** $V_{\max}(M_t) := \max_a Q_O(M_t, a) - \min_a Q_O(M_t, a)$, finite under bounded reward, finite horizon.
 

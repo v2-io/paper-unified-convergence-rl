@@ -1,6 +1,6 @@
 ## Component 4 — Closed-Loop Interventional Access ^sec-loop-level2
 
-We invoke Pearl's causal hierarchy [Pearl 2009] and the causal-hierarchy theorem [Bareinboim-Correa-Ibeling-Icard 2022, Theorem 1]: Level 2 (interventional) queries — $P(Y \mid do(X))$ — are not in general identifiable from Level 1 (associational) data $P(Y \mid X)$, so causal claims at Level 2 require interventional data or structural identifying assumptions (e.g., back-door admissibility [Pearl 2009]).
+We invoke Pearl's causal hierarchy \cite{pearl-2009-causality} and the causal-hierarchy theorem [Bareinboim-Correa-Ibeling-Icard 2022, Theorem 1]: Level 2 (interventional) queries — $P(Y \mid do(X))$ — are not in general identifiable from Level 1 (associational) data $P(Y \mid X)$, so causal claims at Level 2 require interventional data or structural identifying assumptions (e.g., back-door admissibility \cite{pearl-2009-causality}).
 
 ### The loop generates interventional data ^sec-loop-generates
 
@@ -21,10 +21,10 @@ Components 2 and 4 are jointly load-bearing: [[#^sec-pointmass-identity]]'s iden
 
 ### Distinction from active inference and causal-RL precursors ^sec-active-inference-distinction
 
-Action-perception-loop frameworks — active inference [Friston-FitzGerald-Rigoli-Schwartenbeck-Pezzulo 2017; Parr-Pezzulo 2022], control-as-inference [Levine 2018], cybernetics [Wiener 1948; Conant-Ashby 1970] — implicitly use the action-causes-observation observation. Our distinctive moves:
+Action-perception-loop frameworks — active inference [Friston-FitzGerald-Rigoli-Schwartenbeck-Pezzulo 2017; Parr-Pezzulo 2022], control-as-inference \cite{levine-2018-reinforcement}, cybernetics [Wiener 1948; Conant-Ashby 1970] — implicitly use the action-causes-observation observation. Our distinctive moves:
 
 - *Bareinboim-hierarchy connection.* Active inference / cybernetics rest on Bayesian-network (Level 1) generative models; we invoke the causal-hierarchy theorem to position the policy DAG as causal with $do$-conditioning in $Q_O$ ([[#^sec-setup]]).
 - *Regime-indexed identifiability (A/B/C).* AI literature treats causal identifiability uniformly within modeling assumptions; we surface the regime split at framework level.
-- *Scope honesty.* We distinguish "data generated under intervention" from "cleanly identified $do$-estimates"; [Bruineberg-Dolega-Dewhurst-Baltieri 2022] documents that the active-inference literature sometimes elides this.
+- *Scope honesty.* We distinguish "data generated under intervention" from "cleanly identified $do$-estimates"; \cite{bruineberg-dolega-dewhurst-baltieri-2022-bbs} documents that the active-inference literature sometimes elides this.
 
 The causal-RL line [Junzhe Zhang-Bareinboim 2016, 2022; Lu-Meisami-Tewari 2021, 2022; Wang-Yang-Wang 2021 DOVI; Junzhe Zhang 2020] is the direct ancestor for regime-indexed identifiability and on-policy interventional access; all are stationary-MDP. Composition with non-stationarity is, to our knowledge, novel.

@@ -13,7 +13,7 @@ Stochastic-$\pi^*$ extension beyond the perturbative regime (BH/Pinsker fallback
 
 ### Conclusion ^sec-conclusion
 
-We assemble four components — two-gap diagnostic, point-mass reverse-KL/TV identity, multi-factor strategic-tempo forgetting prerequisite, closed-loop interventional access — into a unified non-stationary convergence theory. The composition yields cumulative dynamic regret $\mathrm{DynReg}(T) \le 2cV_{\max}\sqrt{(B_T+1)\,T}$ with per-round coordinate sharper than Pinsker/BH; the cumulative rate matches the variation-budget literature as a corollary. The point-mass identity at the deterministic-$\pi^*$ corner of the Bretagnolle--Huber [1978] family is the technical anchor — absent, to our knowledge, from the prior RL/non-stationary corpus.
+We assemble four components — two-gap diagnostic, point-mass reverse-KL/TV identity, multi-factor strategic-tempo forgetting prerequisite, closed-loop interventional access — into a unified non-stationary convergence theory. The composition yields cumulative dynamic regret $\mathrm{DynReg}(T) \le 2cV_{\max}\sqrt{(B_T+1)\,T}$ with per-round coordinate sharper than Pinsker/BH; the cumulative rate matches the variation-budget literature as a corollary. The point-mass identity at the deterministic-$\pi^*$ corner of the \citet{bretagnolle-huber-1978-densities} family is the technical anchor — absent, to our knowledge, from the prior RL/non-stationary corpus.
 
 > [!todo] Pass-5 (a)(i) coherence drift
 > The cumulative-rate above is the pre-strengthen form. The body's [[#^thm-composition]](v) carries the $N_h$ horizon factor from the spike-N1 strengthen ($N_h\sqrt{(B_T+1)T}$, matching the simulation-lemma penalty). Conclusion / abstract / §1.1 (iv) bullet should propagate. Tracked in `TODO.md`.

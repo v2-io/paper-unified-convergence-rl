@@ -52,7 +52,7 @@ Pinsker [Tsybakov 2009 §2.4; Cover-Thomas 2006 §11.6] gives $R(Q) \le V_{\max}
 
 ### Perturbative extension to $\epsilon$-stochastic optima; where Pinsker / BH are the right tool ^sec-perturbative-extension
 
-Deterministic $\pi^*$ is canonical for finite-MDP RL with isolated optima [Lattimore-Szepesvári 2020]; tied-optimum extensions ([[#^sec-tied-softmax-extensions]]). The deterministic regime is the unperturbed limit, not a hard wall:
+Deterministic $\pi^*$ is canonical for finite-MDP RL with isolated optima \cite{lattimore-2020-bandit}; tied-optimum extensions ([[#^sec-tied-softmax-extensions]]). The deterministic regime is the unperturbed limit, not a hard wall:
 
 > [!theorem] Perturbative identity for $\epsilon$-stochastic optima ^thm-perturbative-eps
 > For $\epsilon$-greedy $\pi^*_\epsilon$ and any policy $Q$ with full-support lower bound $Q(a) \ge q_0 > 0$ for all $a \in \mathcal A$,

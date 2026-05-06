@@ -1,0 +1,95 @@
+## Component 3 — Strategic Tempo and the Forgetting Prerequisite ^sec-strategic-tempo
+
+### Strategic tempo: aggregate and bottleneck forms ^sec-tempo-forms
+
+The agent's rate of *useful* policy revision is a structural quantity, not a tunable hyperparameter. In a non-stationary environment, this rate must keep pace with the rate at which the environment invalidates the agent's existing policy. We make this precise.
+
+Consider a structured policy with $|E|$ revisable elements (in our analysis, edges of an internal causal model the agent maintains over policy components; in [Lee et al.\ 2023]'s ProST, sub-policies indexed by a tempo schedule). Index by $(i, j)$. For each element, three quantities are relevant:
+- $\nu_{ij}$ — the effective observation rate at which the agent receives evidence about element $(i, j)$.
+- $\iota_{ij} \in [0, 1]$ — an identifiability coefficient: the fraction of the evidence stream that genuinely identifies the element's causal effect, rather than reflecting confounded association.
+- $\eta_{\mathrm{edge}, ij}$ — the per-element update gain (how much the agent revises element $(i, j)$ per unit of evidence).
+
+**Strategic tempo (aggregate / throughput form).**
+$$\mathcal T_\Sigma^{\mathrm{agg}} \;:=\; \sum_{(i,j) \in E} \nu_{ij} \cdot \iota_{ij} \cdot \eta_{\mathrm{edge}, ij}.$$
+The per-element product factors three distinct considerations: how often evidence arrives ($\nu$), how *identifiable* the element is from that evidence ($\iota$), and how informative each piece of evidence is for revising the element ($\eta$). Each is an independent gate on per-step expected correction: switching any one to zero kills the per-element correction rate. The $\iota$ factor captures the regime distinction of [[#^sec-loop-level2]] — in intervention-rich regimes (Regime A; software, controlled experiments) $\iota \approx 1$; in observation-only regimes (Regime C) $\iota \approx 0$.
+
+**Strategic tempo (bottleneck / threshold form).** The aggregate sum measures total throughput across the policy DAG. The quantity that determines structural persistence is the per-element minimum:
+$$\mathcal T_\Sigma^{\mathrm{bn}} \;:=\; \min_{(i,j) \in E} \big(\nu_{ij} \cdot \iota_{ij} \cdot \eta_{\mathrm{edge}, ij}\big).$$
+The two satisfy $\mathcal T_\Sigma^{\mathrm{bn}} \le \mathcal T_\Sigma^{\mathrm{agg}}/|E| \le \mathcal T_\Sigma^{\mathrm{agg}}$. The bottleneck enters the persistence threshold ([[#^sec-forgetting-prereq]]); the aggregate enters the necessary-condition $\mathcal T_\Sigma^{\mathrm{agg}} > |E| \rho_\Sigma/R_\Sigma$ and the channel-capacity / sustained-information-rate floor.
+
+The structural parallel with adaptive (epistemic) tempo $\mathcal T = \sum_k \nu^{(k)} \eta^{(k)*}$ from adaptive control [Khalil 2002] is exact for the aggregate form at $\iota \equiv 1$. The $\iota$ factor and the bottleneck aggregator are what distinguish strategic from epistemic tempo: an agent with high observation rate and high update gain still has zero strategic tempo at any element whose causal effect is unidentifiable, and the bottleneck of the whole DAG is then zero.
+
+**Why bottleneck, not sum, in the threshold.** A Lyapunov derivation under adversarial disturbance ([[#^sec-tempo-topologies]] / proof of [[#^thm-forgetting-prereq]]) requires the inequality $\sum_{(i,j)} \alpha_{ij} \delta_{ij}^2 \ge c \cdot \|\boldsymbol\delta_\Sigma\|^2$ to hold for all $\boldsymbol\delta_\Sigma$. The largest $c$ for which this holds uniformly is $\min_{(i,j)} \alpha_{ij}$, not $\sum_{(i,j)} \alpha_{ij}$ — adversarial concentration of $\boldsymbol\delta_\Sigma$ on the weakest element saturates the bound at the bottleneck. The same effect makes per-dimension persistence conditions sharper than scalar conditions in adaptive control [Anderson 1985]: scalar tempo can overstate the available margin because the worst-case disturbance concentrates on the slowest-correcting dimension.
+
+### The strategic sector model ^sec-sector-model
+
+We work within an explicit sector-dynamics model — a Lyapunov reduction of policy-revision dynamics, not a theorem about arbitrary RL update maps.
+
+**Model (S).** Per-element strategic mismatch $\boldsymbol\delta_\Sigma = (\delta_{ij})_{(i,j) \in E}$ in the Euclidean norm $\|\boldsymbol\delta_\Sigma\|^2 = \sum_{(i,j)} \delta_{ij}^2$, evolving in discrete time as
+$$\mathbb E[\Delta \delta_{ij} \mid \delta_{ij}] = -\alpha_{ij} \delta_{ij} + w_{ij}, \quad |w_{ij}| \le \rho_\Sigma / |E|^{1/2},$$
+where $\alpha_{ij} \ge 0$ is a per-element correction rate (the strategic sector parameter), $w_{ij}$ is a bounded disturbance, and the disturbance budget satisfies $\sum_{(i,j)} w_{ij}^2 \le \rho_\Sigma^2$. The strategic reserve $R_\Sigma$ is the operative norm-radius beyond which the agent loses tracking. *Beta-Bernoulli edge updates and other count-accumulating Bayesian schemes instantiate (S) approximately; gradient-based decaying-step updates instantiate (S) under standard Robbins–Monro conditions; the model is a sector-Lyapunov reduction of these mechanisms, not a derivation from the underlying RL policy-iteration dynamics in full generality.*
+
+**Persistence condition.** Adaptive control's persistence condition $\alpha > \rho/R$ [Khalil 2002 Ch. 4, 9; Khasminskii 2012; Anderson-Moore 1979; Anderson 1985; Kreisselmeier 1986] applied to (S) gives
+$$\alpha_\Sigma \;>\; \rho_\Sigma / R_\Sigma.$$ ^eq-persistence-condition
+This is sufficient for ultimate boundedness of $\|\boldsymbol\delta_\Sigma\|$ within $R_\Sigma^* = \rho_\Sigma / \alpha_\Sigma$ under the modeled dynamics — a classical sector-Lyapunov result (see proof sketch in [[#^sec-proof-sketches]] referencing [Khalil 2002 §9, Lemma 9.2 / Theorem 9.1]).
+
+### The forgetting prerequisite and the gain-decay class $\mathcal A_{\mathrm{decay}}$ ^sec-forgetting-prereq
+
+[[#^eq-persistence-condition]] is an *instantaneous* check at the current operating point of the agent. Define the structural class by gain-decay rather than sample-counting:
+$$\mathcal A_{\mathrm{decay}} \;:=\; \big\{\text{updates whose effective sector gain } \alpha_{ij}^{(t)} \to 0 \text{ as } t \to \infty \text{ on every revisable element}\big\}.$$
+This class includes count-accumulating Bayesian updates without forgetting (e.g., Beta-Bernoulli with $\eta_{\mathrm{edge},ij} = 1/(n_{ij}+1)$ where $n_{ij} \to \infty$), bounded-memory schemes with growing memory, observation-aggregating schemes without restart, *and gradient-based methods with vanishing step sizes* ($\eta_t = c/t^\beta$ for $\beta \in (0, 1]$, the Robbins–Monro regime). *For any fixed $(\rho_\Sigma, R_\Sigma)$ with $\rho_\Sigma > 0$, every agent in $\mathcal A_{\mathrm{decay}}$ eventually violates [[#^eq-persistence-condition]]* — at every element, $\alpha_{ij}^{(t)} \to 0$, so the bottleneck $\mathcal T_\Sigma^{\mathrm{bn}}$ decays to zero with experience.
+
+This is a *structural failure of the class $\mathcal A_{\mathrm{decay}}$*, not a tuning problem. The agent's prior calibration cannot help: at any finite calibration level, the gain decays below threshold once enough experience accumulates. Count accumulation without forgetting is a major subclass of $\mathcal A_{\mathrm{decay}}$ because Beta-Bernoulli-style updates have $\alpha \asymp 1/n_{\mathrm{eff}}$. Mechanisms outside $\mathcal A_{\mathrm{decay}}$ — constant-step-size stochastic approximation, sliding-window updates, bounded-memory learners, block-restart schemes, Kalman filters with bounded process noise — maintain a finite gain ceiling and escape asymptotic decay, but then face a *bidirectional threshold* ([[#^sec-bidirectional-thresholds]]).
+
+The canonical fix is exponential forgetting: at each step, shrink per-element pseudo-counts by a factor $\lambda_{ij} \in (0, 1)$ before incorporating new evidence,
+$$\alpha_k \mapsto \lambda_{ij} \alpha_k + y_k, \qquad \beta_k \mapsto \lambda_{ij} \beta_k + (1 - y_k).$$
+The per-element effective sample size stabilizes at $n_{\mathrm{eff}, ij} \approx 1/(1-\lambda_{ij})$, giving steady-state per-element sector parameter
+$$\alpha_{ij}^{\mathrm{ss}} \;\approx\; \nu_{ij} \cdot \iota_{ij} \cdot (1 - \lambda_{ij}).$$
+
+> [!theorem] Multi-factor forgetting prerequisite — sufficient threshold for the diagonal sector model ^thm-forgetting-prereq
+> Within Model (S) of [[#^sec-sector-model]] with diagonal per-element correction rates $\alpha_{ij} = \nu_{ij} \cdot \iota_{ij} \cdot \eta_{\mathrm{edge},ij}$ (per-element observation rate $\nu_{ij} \in [0,1]$, regime-adjusted identifiability $\iota_{ij} \in [0,1]$, edge-update gain $\eta_{\mathrm{edge},ij} > 0$), under per-element exponential forgetting at rate $\lambda_{ij} \in (0,1)$ giving steady-state $\eta_{\mathrm{edge},ij}^{\mathrm{ss}} \approx 1 - \lambda_{ij}$, ultimate boundedness of $\|\boldsymbol\delta_\Sigma\|$ within $R_\Sigma^* = \rho_\Sigma / \mathcal T_\Sigma^{\mathrm{bn,ss}}$ is sufficient under
+> $$\boxed{\;\mathcal T_\Sigma^{\mathrm{bn,ss}} \;:=\; \min_{(i,j) \in E} \big(\nu_{ij} \cdot \iota_{ij} \cdot (1 - \lambda_{ij})\big) \;>\; \rho_\Sigma / R_\Sigma.\;}$$
+> The threshold is sharp inside the diagonal sector model in the following sense: when the inequality reverses, there exists an adversarial disturbance $\boldsymbol w$ concentrating on the bottleneck element $(i^*, j^*)$ with $|w_{i^*j^*}| = \rho_\Sigma$ that drives $\|\boldsymbol\delta_\Sigma\|$ beyond $R_\Sigma$ within the modeled dynamics. The theorem is silent about non-diagonal correction architectures or stabilization mechanisms outside Model (S). Proof sketch: [[#^sec-proof-sketches]].
+
+The right-hand side is environment-side (disturbance rate, reserve); the left-hand side is a bottleneck over per-element products of observation rate, identifiability, and discount rate. The theorem is a sufficient-and-sharp statement *inside* the sector-Lyapunov model; it is silent about correction architectures outside this model (alternative non-sector-bounded revisions, or boundedness produced by mechanisms other than the modeled $\alpha_\Sigma$-correction).
+
+> [!corollary] Beta-Bernoulli normalization — recovers the single-factor form ^cor-beta-bernoulli
+> Under $\nu_{ij} = \iota_{ij} = 1$ for all elements and uniform $\lambda_{ij} = \lambda$, $\mathcal T_\Sigma^{\mathrm{bn,ss}} = 1-\lambda$, recovering the textbook persistence condition $(1-\lambda) > \rho_\Sigma/R_\Sigma$.
+
+> [!corollary] Aggregate necessary condition ^cor-aggregate-necessary
+> Under uniform domain parameters, $\mathcal T_\Sigma^{\mathrm{agg,ss}} > |E| \cdot \rho_\Sigma/R_\Sigma$ is necessary (but not sufficient) for the bottleneck condition — a cheap fail-fast pre-check.
+
+**Worked-topology corollaries** (each surfacing a different factor as binding; full Beta-Bernoulli derivations in [[#^sec-tempo-topologies]]):
+- *Single edge.* $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \nu \iota (1-\lambda)$ — all three factors load-bearing.
+- *AND-chain depth-$d$ with observable intermediates.* $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \min_k \prod_{j<k}\theta_j (1-\lambda_k)$ — *depth-gated*: each downstream edge inherits attenuation from the success probability of upstream edges.
+- *OR-node $\varepsilon$-greedy.* $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \min\bigl((1-\varepsilon)(1-\lambda_1),\ \varepsilon(1-\lambda_2)\bigr)$ — *exploration-gated*: pure greedy ($\varepsilon = 0$) collapses the bottleneck on the unexplored arm.
+- *Any single Regime-C edge.* $\iota_{ij} = 0$ at any single element $\Rightarrow \mathcal T_\Sigma^{\mathrm{bn,ss}} = 0$. **Regime-C contamination is structurally fatal**: an agent with even one fully-confounded element cannot meet the threshold by forgetting alone.
+
+#### Bidirectional thresholds for non-accumulating mechanisms ^sec-bidirectional-thresholds
+
+Mechanisms outside $\mathcal A_{\mathrm{decay}}$ stabilize the sector parameter $\alpha_\Sigma$ at a finite ceiling. Within the sector-Lyapunov reduction, the forgetting prerequisite then holds *iff* that ceiling exceeds $\rho_\Sigma/R_\Sigma$:
+
+| Mechanism | $\alpha_\Sigma^{\mathrm{ss}}$ | Prerequisite holds iff |
+|---|---|---|
+| Exponential forgetting with $\lambda$ | $1 - \lambda$ | $1 - \lambda > \rho_\Sigma/R_\Sigma$ |
+| Constant-step SA with rate $\eta$ | $\eta$ | $\eta > \rho_\Sigma/R_\Sigma$ |
+| Fixed-window mechanisms (sliding-window size $W$, bounded-memory size $K$, block-restart period $T_R$) | $1/W$, $1/K$, $1/T_R$ | window/memory/period $< R_\Sigma/\rho_\Sigma$ |
+
+For each row, the threshold is *bidirectional* and sharp within the sector-Lyapunov reduction. The structural-class theorem of [[#^sec-forgetting-prereq]] covers $\mathcal A_{\mathrm{decay}}$ universally; persistent-exploration paired with count-accumulating updates on the exploit arm inherits the $\mathcal A_{\mathrm{decay}}$ verdict — persistent exploration alone does not escape asymptotic decay.
+
+The prerequisite is a *structural threshold*, not a hyperparameter: every factor enters multiplicatively per element (zeroing any collapses the bottleneck; low identifiability cannot be compensated by faster forgetting); the aggregate $\mathcal T_\Sigma^{\mathrm{agg,ss}}$ governs throughput / channel capacity while the bottleneck $\mathcal T_\Sigma^{\mathrm{bn,ss}}$ governs survival; below threshold an adversarial disturbance drives $\|\boldsymbol\delta_\Sigma\| > R_\Sigma$, above it bounds at $R_\Sigma^* = \rho_\Sigma / \mathcal T_\Sigma^{\mathrm{bn,ss}}$; the threshold is on steady-state operation, not initial accuracy.
+
+### Lifting [Lee et al.\ 2023] from hyperparameter to structural threshold ^sec-prost-lift
+
+[Lee et al. 2023] (the ProST framework, NeurIPS 2023) is the closest published neighbor. ProST defines an *agent tempo* — the schedule of policy update times $\{t_1, \dots, t_K\}$ — and computes the schedule that minimizes the dynamic regret upper bound under non-stationarity. The companion paper [Lee et al. 2024] (Pausing Policy Learning, ICML 2024) shows that *non-zero policy hold duration* yields sharper dynamic regret. Together, they establish tempo as a convergence-relevant variable in non-stationary RL.
+
+Our forgetting prerequisite *lifts* the ProST move along two axes simultaneously: (a) *single-factor → multi-factor*: ProST's tempo is a single scalar (update frequency); ours is a per-element bottleneck over $\nu \cdot \iota \cdot (1-\lambda)$, with each factor independently load-bearing. ProST's schedule recovers as the special case $|E| = 1$, $\nu = \iota = 1$. (b) *Hyperparameter-optimization → structural-survival inequality*: ProST asks *given* an environment, *what tempo schedule* minimizes regret? The forgetting prerequisite asks *given* an environment with disturbance $\rho_\Sigma$ and reserve $R_\Sigma$, *what is the minimal bottleneck below which no schedule persists?* The two questions are complementary; ProST's optimal-schedule result is silent about the *threshold* below which no schedule works.
+
+Concretely, in the Lee et al.\ ProST setup, holding policy fixed between updates is a *block-restart* mechanism. The sector-level equivalence is rigorous:
+
+> [!lemma] ProST sector-level reduction — impulsive-system form ^lem-prost-impulsive
+> Within Model (S) of [[#^sec-sector-model]], idealize ProST as an impulsive system: between scheduled update times $\{t_1, \dots, t_K\} \subset [0, T]$ the agent's policy is held fixed and the strategic mismatch $\|\boldsymbol\delta_\Sigma\|$ evolves under disturbance budget $\rho_\Sigma$ alone (continuous-destabilizing in the Lyapunov $V = \|\boldsymbol\delta_\Sigma\|^2$); at each update time $t_i$ the policy is revised, contracting the modeled mismatch by per-update impulse gain $\gamma \in (0, 1]$ (so $\|\boldsymbol\delta_\Sigma(t_i^+)\| \le (1-\gamma)\,\|\boldsymbol\delta_\Sigma(t_i^-)\|$). Let $\Delta_{\max} := \max_i (t_{i+1} - t_i)$ be the longest inter-update gap. Then under the reverse average-dwell-time condition
+> $$\Delta_{\max} \cdot \frac{\rho_\Sigma}{R_\Sigma} \;<\; -\ln(1-\gamma)^2,$$
+> the modeled mismatch is ultimately bounded within $R_\Sigma^* \approx \rho_\Sigma \Delta_{\max} / \gamma$ to leading order in $\gamma$ [Hespanha–Liberzon–Teel 2008, Theorem 1, reverse-ADT branch for impulsive systems with destabilizing continuous evolution and stabilizing impulses]. Under uniform blocks $\Delta_i = T/K$ the condition reduces to $K/T > \rho_\Sigma / (2\gamma R_\Sigma)$ (leading order in $\gamma$) — recovering the $K/T$-averaged form with the impulse gain made explicit. Under nonuniform schedules the impulsive form is strictly stronger: the longest block sets the threshold, not the average. The lemma is rigorous for the modeled impulsive sector dynamics; the per-update impulse gain $\gamma$ is a domain quantity (depends on within-block sample size and update-time discount) and is left abstract.
+
+Applied to ProST: when the impulsive condition above holds, ProST's schedule satisfies the forgetting prerequisite and the modeled mismatch remains ultimately bounded, consistent with ProST's sublinear dynamic-regret upper bound; when the longest block $\Delta_{\max}$ exceeds $-\ln(1-\gamma)^2 \cdot R_\Sigma / \rho_\Sigma$, the schedule fails the prerequisite *within the sector-Lyapunov reduction*. The form makes explicit a tradeoff between update frequency $1/\Delta_{\max}$ and per-update impulse strength $\gamma$ — the same disturbance can be tolerated either by frequent weak updates or rare strong ones. The suggestion holds for algorithms whose policy-revision dynamics fall under the sector-Lyapunov model; we do not claim *every* RL algorithm's dynamic regret diverges in this regime. The same threshold-form reframe applies to forgetting mechanisms throughout non-stationary RL — [Garivier-Moulines 2008] (sliding-window UCB), [Touati-Vincent 2020] (OPT-WLSVI exponential weighting), [Russac-Vernade-Cappé 2019] (weighted linear bandits), [Cheung-Simchi-Levi-Zhu 2020] (sliding-window with confidence widening). These appear as algorithmic mechanisms with tunable parameters optimizing dynamic regret; the prerequisite recasts $(1-\lambda) > \rho_\Sigma/R_\Sigma$ as a structural survival condition with environment-side parameters on the RHS. Dynamic-regret optimization leaves open whether *some* schedule satisfies the prerequisite for *every* environment; the threshold form shows within the sector-Lyapunov reduction it does not — for $\rho_\Sigma / R_\Sigma \ge 1$, no $\lambda \in (0, 1)$ suffices.

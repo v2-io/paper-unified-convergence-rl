@@ -10,6 +10,24 @@
 
 **Bold-prefix vs callout form — verify intentional.** `src/A-supporting-material.md:21` uses `**Corollary.** $\delta_{\mathrm{sat}}^{\mathrm B} \le \dots$` as a paragraph-prefix. AUTHORING §1.1 prefers Obsidian `> [!corollary] ^anchor` for theorem-shaped semantic blocks; AUTHORING §1.9 allows bold-prefix for plain paragraph headings. The corollary at line 21 has no number and no cross-ref, so bold-prefix may be intentional — but if the claim is referenced anywhere or warrants a numbered counter, it should move to a callout. Quick read: if `\Cref{cor-…}` is wanted, convert; otherwise leave.
 
+**Three wide-table overflows — `[!table] cols="..."` refactor candidate.** lualatex compile log reports three overfull-hbox warnings on bare markdown tables, with the worst at **1319 pt too wide** (≈18 inches past page edge — content silently runs off the page in the rendered PDF):
+
+- `src/08-related-work.md:5` — *Strand × Closest neighbors × Our distinction* table. The middle column has multi-cite bibkey lists that don't break across lines. **1319.59pt overfull** — the worst of the three; clipping is severe.
+- `src/05-strategic-tempo.md:74` — *Mechanism × α_Σ^ss × Prerequisite-holds-iff* table. **267.20pt overfull**.
+- `src/03-two-gap-diagnostic.md:25` — Two-Gap 2×2 diagnostic table with prose-shaped cells. **167.13pt overfull**.
+
+These are bare markdown tables (no `[!table]` callout wrapper), so the pipeline emits them as `\begin{tabular}{lll}` with natural-width columns — fine for narrow tables, broken for prose-cell tables. Wrap each in a captioned + anchored `[!table]` callout with `cols="l X X"` (or as appropriate) per AUTHORING §1.4. The `X` columns wrap text within `\textwidth`. Concrete example for the related-work strand table:
+
+```
+> [!table] Closest-neighbor strands and their distinctions. ^tab-related-work-strands
+> 
+> | Strand | Closest neighbors | Our distinction |
+> |:-------|:------------------|:----------------|
+> | 1. Dynamic regret under drift | \cite{cheung-2020-reinforcement, ...} | Recovered as instances ... |
+```
+
+…with `cols="l X X"` on the marker. That'll re-flow the long-prose cells within textwidth and eliminate the 1319pt clipping. The two narrower overflows (267pt / 167pt) are also good candidates for the same treatment — the prose-shaped cells in the diagnostic and mechanism tables benefit from `X`-column text-wrapping. Wrapping them in `[!table]` callouts also gives them captions + cross-ref anchors, which the bare markdown tables currently lack.
+
 ---
 
 ## Migration milestones (agent #2, 2026-05-05) — landed

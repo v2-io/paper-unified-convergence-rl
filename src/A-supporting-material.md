@@ -73,14 +73,13 @@ This holds *uniformly in $Q$*, with no alignment hypothesis.
 $$
 \begin{aligned}
 D_{\mathrm{KL}}(\pi^*_\epsilon \,\|\, Q) - D_{\mathrm{KL}}(\delta_{a^*} \,\|\, Q)
-&= (1-\epsilon)\log(1-\epsilon) - \log\!\frac{Q(a^*)}{Q(a^*)} \\
-&\quad + \tfrac{\epsilon}{|\mathcal A|-1}\sum_{a \neq a^*}\!\Bigl(\log\!\tfrac{\epsilon}{|\mathcal A|-1} - \log Q(a)\Bigr) - 0 \\
-&\quad + \epsilon\log Q(a^*) - \log Q(a^*)\bigl((1-\epsilon)-1\bigr).
+&= (1-\epsilon)\log\!\frac{1-\epsilon}{Q(a^*)} + \tfrac{\epsilon}{|\mathcal A|-1}\sum_{a \neq a^*}\!\log\!\frac{\epsilon/(|\mathcal A|-1)}{Q(a)} - \bigl(-\log Q(a^*)\bigr) \\
+&= (1-\epsilon)\log(1-\epsilon) + \epsilon\log Q(a^*) + \epsilon\log\!\tfrac{\epsilon}{|\mathcal A|-1} - \tfrac{\epsilon}{|\mathcal A|-1}\sum_{a \neq a^*}\log Q(a),
 \end{aligned}
 $$
-After cancellations, the leading-order behavior is
-$$D_{\mathrm{KL}}(\pi^*_\epsilon \,\|\, Q) = D_{\mathrm{KL}}(\delta_{a^*} \,\|\, Q) + \epsilon\log\epsilon - \epsilon\bigl(\log(|\mathcal A|-1) + 1\bigr) + \tfrac{\epsilon}{|\mathcal A|-1}\sum_{a \neq a^*}(-\log Q(a)) + O(\epsilon^2).$$
-Under $Q(a) \ge q_0$, the term $-\log Q(a) \le \log(1/q_0)$ is uniformly bounded; the dominant correction is $\epsilon\log\epsilon$, giving
+where the second line collects the $\log Q(a^*)$ contributions via $-(1-\epsilon)\log Q(a^*) + \log Q(a^*) = \epsilon\log Q(a^*)$ and splits $\epsilon\log(\epsilon/(|\mathcal A|-1))$ off the second sum. Expanding $(1-\epsilon)\log(1-\epsilon) = -\epsilon + O(\epsilon^2)$ and $\epsilon\log(\epsilon/(|\mathcal A|-1)) = \epsilon\log\epsilon - \epsilon\log(|\mathcal A|-1)$, the leading-order behavior is
+$$D_{\mathrm{KL}}(\pi^*_\epsilon \,\|\, Q) = D_{\mathrm{KL}}(\delta_{a^*} \,\|\, Q) + \epsilon\log\epsilon - \epsilon\bigl(\log(|\mathcal A|-1) + 1\bigr) + \epsilon\log Q(a^*) - \tfrac{\epsilon}{|\mathcal A|-1}\sum_{a \neq a^*}\log Q(a) + O(\epsilon^2).$$
+Under $Q(a) \ge q_0$, each $|\log Q(a)| \le \log(1/q_0)$ is uniformly bounded; the dominant correction is the $\epsilon\log\epsilon$ leading term, giving
 $$\bigl|D_{\mathrm{KL}}(\pi^*_\epsilon \,\|\, Q) - D_{\mathrm{KL}}(\delta_{a^*} \,\|\, Q)\bigr| = O\bigl(\epsilon \log(1/\epsilon) + \epsilon \log(1/q_0)\bigr) = O(\epsilon\log(1/\epsilon))$$
 absorbing $\epsilon \log(1/q_0)$ into the leading $\epsilon\log(1/\epsilon)$ term as $\epsilon \to 0$ (constants depend on $q_0$ and $|\mathcal A|$).
 
@@ -102,13 +101,10 @@ The two-sided bound transfers from [[#^thm-twosided-regret]] with the same corre
 
 The bottleneck strategic tempo $\mathcal T_\Sigma^{\mathrm{bn,ss}}$ of [[#^thm-forgetting-prereq]] is verified — and the resulting per-topology threshold derived — across four canonical topologies under Beta-Bernoulli edge updates with per-element forgetting:
 
-- **B.1 — Single edge.** $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \nu \cdot \iota \cdot (1-\lambda)$. All three factors load-bearing; setting any one to zero collapses the bottleneck.
-- **B.2 — Two-edge AND chain, observable intermediate.** $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \min\bigl(\nu_1(1-\lambda_1),\ \nu_1\theta_1(1-\lambda_2)\bigr)$. Edge 2's effective observation rate is gated by edge 1's success probability $\theta_1$ — *depth-gated attenuation*. For depth-$d$ chains, the bottleneck is $\min_k \prod_{j<k}\theta_j (1-\lambda_k)$.
-- **B.3 — Two-edge AND chain, unobservable intermediate.** Per-edge tempo ill-defined; plan-level bottleneck $\mathcal T_{\Sigma, \mathrm{plan}}^{\mathrm{bn,ss}} = \nu(1-\lambda_\Phi)$ over a single tracked plan-level quantity $\hat\Phi = p_1 p_2$.
-- **B.4 — Two-arm OR node, $\varepsilon$-greedy.** $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \min\bigl((1-\varepsilon)(1-\lambda_1),\ \varepsilon(1-\lambda_2)\bigr)$. Action selection controls rate allocation; pure greedy ($\varepsilon = 0$) collapses the unexplored arm's bottleneck — *exploration-gated*.
-
-> [!todo] Sub-label inconsistency
-> The "B.1"–"B.4" labels above are sub-labels within §A.7, not within Appendix B. Source carries "B." rather than "A.7." prefix — looks like a labeling drift. Per-paper agent may want to renumber as "A.7.1"–"A.7.4" for clarity.
+- **(T1) Single edge.** $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \nu \cdot \iota \cdot (1-\lambda)$. All three factors load-bearing; setting any one to zero collapses the bottleneck.
+- **(T2) Two-edge AND chain, observable intermediate.** $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \min\bigl(\nu_1(1-\lambda_1),\ \nu_1\theta_1(1-\lambda_2)\bigr)$. Edge 2's effective observation rate is gated by edge 1's success probability $\theta_1$ — *depth-gated attenuation*. For depth-$d$ chains, the bottleneck is $\min_k \prod_{j<k}\theta_j (1-\lambda_k)$.
+- **(T3) Two-edge AND chain, unobservable intermediate.** Per-edge tempo ill-defined; plan-level bottleneck $\mathcal T_{\Sigma, \mathrm{plan}}^{\mathrm{bn,ss}} = \nu(1-\lambda_\Phi)$ over a single tracked plan-level quantity $\hat\Phi = p_1 p_2$.
+- **(T4) Two-arm OR node, $\varepsilon$-greedy.** $\mathcal T_\Sigma^{\mathrm{bn,ss}} = \min\bigl((1-\varepsilon)(1-\lambda_1),\ \varepsilon(1-\lambda_2)\bigr)$. Action selection controls rate allocation; pure greedy ($\varepsilon = 0$) collapses the unexplored arm's bottleneck — *exploration-gated*.
 
 The structural decomposition: AND-chains exhibit *depth-gated* geometric attenuation $\nu_k = \nu \prod_{j < k} \theta_j$; OR-nodes exhibit *exploration-gated* allocation. Mixed AND/OR DAGs interleave both. Each topology surfaces a different factor as the binding bottleneck.
 

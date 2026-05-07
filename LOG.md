@@ -6,6 +6,32 @@ For active backlog see `TODO.md`. For umbrella-level history see `~/src/neurips/
 
 ---
 
+## 2026-05-07 — Self-read of the rendered tex; hardcoded-ref bug fixed; N1–N5 findings landed
+
+While the Opus auditor was working an independent de-novo audit, I did my own first-hand cold read of `unified-rl-neurips-2026.tex` (the kramdown-emitted intermediate, since `pdftotext` flattens math). Per AGENTS §3.5: audit-grade work stays first-hand; the two independent reads will be more useful than one once Opus's findings land — convergence builds confidence, divergence is a learning signal.
+
+**Notes file at `audits/de-novo-self-read-2026-05-07.md`** (kept active while Opus is in flight; archive once Opus integrated). Five new findings beyond what Codex / Gemini surfaced:
+
+- **N1 — headline rate stated four different ways.** Abstract: `O(V_max √((B_T+1) T))` (no N_h, no bias). §1 / §6: `Õ(N_h √((B_T+1) T))` (no V_max, no bias). Theorem 4.1(v): full form including N_h, V_max, *and* the bias term. Form-instability across locations is a separate finding from Codex H6's bias-term-omission — readers comparing four statements will reasonably ask which is the actual headline. Resolution depends on the held strategy decision (identity-vs-rate-as-headline); once committed, propagate consistently.
+
+- **N2 — numbering inconsistency abstract vs. §1.1.** Abstract has four equal components (i)–(iv); §1.1 Contribution has three (i)–(iii) plus "Connective tissue: the two-gap diagnostic"; §4 returns to four-equal; §4.4 says "bundle of compatible guarantees, not a single integrated theorem." Concrete surface of Codex M2.
+
+- **N3 — stale `Theorem 4.2` / `Theorem 4.3` / `Lemma 5.2` cross-refs in `src/re/B-key-lemma-proofs.md`.** Migration-era leftovers in proof-section labels referencing theorems that don't exist as numbered in §4 / §5. **Fixed in this commit:** parenthetical numbers removed; replaced with anchored `[[#^sec-...]]` references where useful. The structural question of whether these results *should* be named numbered theorems is filed as O2 in TODO (pairs with O1 / Gemini's universal-failure-class elevation).
+
+- **N4 — algebra error in §B Lemma 2 proof.** This is Codex H1 made on-page visible. The proof writes "V > ρ²/(2𝒯) gives negative drift" (correct), then "iterating gives R*² = ρ²/𝒯² to leading order, i.e., R* = ρ/𝒯" — which doesn't follow. The correct conclusion from `V ≤ ρ²/(2𝒯)` is `R* ≤ ρ/√(2𝒯)` (mean-square form). On-page algebra hop makes the H1 spike higher priority than just "Codex flagged this" — the displayed step has a real error.
+
+- **N5 — direction-forcing rhetoric undersold.** §3 line 25 says "we use reverse KL because forward KL is +∞ off-optimum" as a one-line convention remark. This is *the* structural reason the framework works (forward KL is *forced* into vacuity at the deterministic-π* corner; reverse-KL is structural, not stylistic). Could be promoted to a paragraph-prefix declaration. Minor, budget-pass tightening item.
+
+**Joseph's directive ("there definitely shouldn't be any hardcoded references in the source")** prompted the N3 fix and a broader sweep against AUTHORING §1.7 / §2.2's anti-hardcoded-ref convention. Sweep clean post-fix: no remaining numbered self-references; all surviving "Theorem N" / "Lemma N" mentions are to cited papers (Hespanha-Liberzon-Teel Theorem 1, Khalil Lemma 9.2, Csiszár Theorems 3 and 5, Aczél-Daróczy §4) or to internal anchored cross-refs.
+
+**Confirmation of H1–H5 / M1 / M3 against primary source.** Holistic read confirms each finding I integrated yesterday holds up — most visibly in §B Lemma 2's algebra (H1 / N4) and §A simulation-lemma step (H3). M1's C2 caveat *is* properly surfaced in §6 conclusion line 510 ("On coupled-goal architectures") — it just doesn't appear in headline locations. M3's `q_0` condition is in §5 line 16 but missing from §4 line 15.
+
+**§4.4 page-budget candidate confirmed and sharpened.** On re-read, the case for relocating §4.4 ("Necessity of the four components") to an appendix is stronger than I framed yesterday: not just "self-contained ablation" but the body's narrative arc actually flows better without §4.4 interrupting between Theorem 4.1's unpacking (§4.3) and §5's mechanism narrative. Small refinement: when relocating, port the §1.1 line-254 framing of "without Component 2" (which says "loses *exactness* and the behavior-cloning interpretation vanishes") into §4.4's currently-thinner "we'd use Pinsker or BH instead" framing.
+
+**Standing by for the Opus auditor's findings.** When they land, compare against my N1–N5; convergence is high-confidence, divergence is interesting.
+
+---
+
 ## 2026-05-07 — De-novo audits (Gemini + Codex) integrated into TODO
 
 Two de-novo audit reports landed: Gemini at `audits/de_novo_audit_2026_05_06.md` (terse, page-budget-leaning) and Codex at `audits/de-novo-audit-2026-05-07.md` (detailed, technical, six H-findings + three M-findings + trim recommendations + suggested triage). Joseph's instruction: do not take findings at face value; verify; with Codex specifically, attempt strengthening before any softening; add to TODO what *I* judge most valuable. Following AGENTS §3.5 (audit-grade tasks stay first-hand, no sub-agent farming) and §3.1 (strengthen-before-soften).

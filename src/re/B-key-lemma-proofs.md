@@ -14,13 +14,13 @@ we have $-\log Q(a^*) = -\log(1 - \operatorname{TV})$. Solving for TV gives $\op
 
 **Strict-improvement substitution.** Substituting the identity into the Bretagnolle–Huber inequality $\operatorname{TV}(P, Q) \le \sqrt{1 - e^{-D_{\mathrm{KL}}(P \,\|\, Q)}}$ at $P = \delta_{a^*}$ yields $1 - e^{-D_{\mathrm{KL}}} \le \sqrt{1 - e^{-D_{\mathrm{KL}}}}$, which holds *strictly* on $D_{\mathrm{KL}} > 0$ since $x < \sqrt{x}$ on $(0, 1)$. The identity therefore supplies the *exact* TV value at the deterministic-π* corner and lies strictly below the BH envelope there.
 
-**Two-sided regret bound (Theorem 4.2 in [[#^sec-main-result]]).** From the regret expression $R(Q) = \sum_{a \neq a^*} Q(a) \Delta(a)$ and $\Delta(a) \le V_{\max}$:
+**Two-sided regret bound** (stated as Component 2's two-sided characterization in [[#^sec-four-components]] and as Key Lemma 1's *Per-round regret bound* paragraph in [[#^sec-key-lemma-1]]). From the regret expression $R(Q) = \sum_{a \neq a^*} Q(a) \Delta(a)$ and $\Delta(a) \le V_{\max}$:
 $$R(Q) \;\le\; V_{\max} \sum_{a \neq a^*} Q(a) \;=\; V_{\max} \bigl(1 - Q(a^*)\bigr) \;=\; V_{\max} \operatorname{TV}(\delta_{a^*}, Q) \;=\; V_{\max} (1 - e^{-D_{\mathrm{KL}}}).$$
 The matching action-gap lower bound (full statement in [[#^sec-aux-action-gap]]) gives
 $$R(Q) \;=\; \sum_{a \neq a^*} Q(a) \Delta(a) \;\ge\; \Delta_{\min} \sum_{a \neq a^*} Q(a) \;=\; \Delta_{\min} \operatorname{TV}(\delta_{a^*}, Q) \;=\; \Delta_{\min} (1 - e^{-D_{\mathrm{KL}}}).$$
 Combining gives the two-sided characterization. The bound is *Lipschitz-equivalent* with constants $\Delta_{\min}/V_{\max}$ and $1$, both achieved on extremal value landscapes — therefore *coordinate-optimal among bounds depending only on TV*. $\square$
 
-### Proof of perturbative extension (Theorem 4.3 — ε-stochastic and softmax-regularized) ^sec-perturbative
+### Proof of the perturbative extension — ε-stochastic and softmax-regularized ^sec-perturbative
 
 We establish the perturbative identity via a uniform perturbation argument rather than an alignment-specific calculation.
 
@@ -73,7 +73,7 @@ This is the standard Khalil sector-Lyapunov ultimate-boundedness setup \cite{kha
 
 **Sharpness.** When the inequality reverses ($\mathcal T_\Sigma^{\mathrm{bn,ss}} \le \rho_\Sigma / R_\Sigma$), an adversarial disturbance concentrating on the bottleneck element $(i^*, j^*)$ with $|w_{i^* j^*}| = \rho_\Sigma$ pushes $\|\boldsymbol\delta_\Sigma\| > R_\Sigma$ within the modeled dynamics — the threshold is sharp inside the diagonal sector model. The theorem is silent about non-diagonal correction architectures or stabilization mechanisms outside Model (S). $\square$
 
-### Proof of impulsive ProST reduction (Lemma 5.2) ^sec-proof-prost-impulsive
+### Proof of the impulsive ProST sector-level reduction ^sec-proof-prost-impulsive
 
 Within Model (S), idealize ProST \cite{lee-2023-prost-tempo} as an impulsive system: between scheduled update times $\{t_1, \ldots, t_K\} \subset [0, T]$ the agent's policy is held fixed and the strategic mismatch evolves under disturbance budget $\rho_\Sigma$ alone (continuous-destabilizing in the Lyapunov $V = \|\boldsymbol\delta_\Sigma\|^2$); at each update time $t_i$ the policy is revised, contracting the modeled mismatch by per-update impulse gain $\gamma \in (0, 1]$ so $\|\boldsymbol\delta_\Sigma(t_i^+)\| \le (1 - \gamma) \|\boldsymbol\delta_\Sigma(t_i^-)\|$. Then $V(t_i^+) \le (1 - \gamma)^2 V(t_i^-)$.
 

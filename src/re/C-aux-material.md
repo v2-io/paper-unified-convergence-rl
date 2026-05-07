@@ -81,11 +81,13 @@ This is a *structural* failure of the class, not a tuning problem. The class inc
 
 Mechanisms *outside* $\mathcal A_{\mathrm{decay}}$ — constant-step-size stochastic approximation, sliding-window updates, bounded-memory learners, block-restart schemes, Kalman filters with bounded process noise — maintain a finite gain ceiling and escape asymptotic decay, but then face a *bidirectional* threshold:
 
-| Mechanism | $\alpha_\Sigma^{\mathrm{ss}}$ | Prerequisite holds iff |
-|---|---|---|
-| Exponential forgetting with $\lambda$ | $1 - \lambda$ | $1 - \lambda > \rho_\Sigma/R_\Sigma$ |
-| Constant-step SA with rate $\eta$ | $\eta$ | $\eta > \rho_\Sigma/R_\Sigma$ |
-| Fixed-window mechanisms (sliding-window size $W$, bounded-memory size $K$, block-restart period $T_R$) | $1/W$, $1/K$, $1/T_R$ | window/memory/period $< R_\Sigma/\rho_\Sigma$ |
+> [!table] Bidirectional thresholds for non-accumulating mechanisms outside $\mathcal A_{\mathrm{decay}}$. ^tab-bidirectional-thresholds cols="X l X"
+>
+> | Mechanism | $\alpha_\Sigma^{\mathrm{ss}}$ | Prerequisite holds iff |
+> |---|---|---|
+> | Exponential forgetting with $\lambda$ | $1 - \lambda$ | $1 - \lambda > \rho_\Sigma/R_\Sigma$ |
+> | Constant-step SA with rate $\eta$ | $\eta$ | $\eta > \rho_\Sigma/R_\Sigma$ |
+> | Fixed-window mechanisms (sliding-window size $W$, bounded-memory size $K$, block-restart period $T_R$) | $1/W$, $1/K$, $1/T_R$ | window/memory/period $< R_\Sigma/\rho_\Sigma$ |
 
 For each row, the threshold is *bidirectional* and sharp within the sector-Lyapunov reduction.
 

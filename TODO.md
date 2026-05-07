@@ -4,9 +4,11 @@
 
 ---
 
-## Audit findings — 2026-05-06 (Gemini) + 2026-05-07 (Codex + self-read) — strengthening candidates
+## Audit findings — 2026-05-06 (Gemini, Codex, Opus + self-read) — strengthening candidates
 
-Two de-novo audits arrived plus a first-hand self-read. Findings below are what survived primary-source verification per AGENTS §3.5, framed as strengthening candidates per AGENTS §3.1 (try the improbable strengthening before any softening). Each is a candidate for a `spikes/<name>/` directory; the strengthening direction is sketched, not committed. Codex/Gemini reports archived to `_archive/audits/`; self-read notes at `audits/de-novo-self-read-2026-05-07.md` (kept active while Opus auditor's findings are in flight, for triangulation; archive once Opus integrated).
+Four independent reads landed: Gemini (terse, page-budget-leaning), Codex (detailed technical: H1–H5, M1–M3), my own first-hand self-read (N1–N5), and Opus 4.7 1M (most thorough: M1–M8 math correctness, A1–A9 argument strength, plus prose/citation/nit findings). Below are findings that survived primary-source verification per AGENTS §3.5, framed as strengthening candidates per AGENTS §3.1. All four reads' raw reports are in `_archive/audits/` once integration verified.
+
+**Convergence pattern.** The two strongest signals come from multi-read convergence: (a) the forgetting-proof algebra error (Codex H1 / my N4 / Opus M1 — three reads catch the same algebra hop at `B-key-lemma-proofs.md:72`); (b) the headline-rate bias-term omission (Codex H6 / my N1 / Opus A7 — three reads catch the same elision in abstract / §1 / §6). Codex's "theorem-to-rhetoric tension" framing names the broader pattern these convergences instance.
 
 ### Verified-real, strengthening-spike candidates
 
@@ -25,6 +27,37 @@ Two de-novo audits arrived plus a first-hand self-read. Findings below are what 
 - [ ] **M1 (sequential-ignorability framing in headline locations).** `src/re/01-introduction.md:33` and `src/re/04-main-result.md:21` use "interventional by construction" for the closed-loop. The actual content requires (C2) sequential ignorability — temporal ordering alone (which the architecture *does* give "by construction") is necessary but not sufficient. The C2 caveat is correctly surfaced at `src/re/06-conclusion.md:15` but not at the headline. Replace headline framing with "interventional under (C1)–(C3)" or "interventional under sequential ignorability" so the assumption that does heavy work is visible at first read; preempts a likely causal-inference reviewer objection. Source: `src/re/01-introduction.md:33`, `src/re/04-main-result.md:21`.
 
 - [ ] **M3 (perturbative `q₀` condition in §4 main-text statement).** §4 line 15 mentions the perturbative extension's correction order `O(ε log(1/ε))` without naming the full-support `Q ≥ q₀` condition under which the constants stay bounded (proof at `src/re/B-key-lemma-proofs.md:27-45`; constants depend on `q₀` and `|A|`). §5 line 16 does mention it. Add "(under full-support `Q(a) ≥ q₀ > 0`)" qualifier to the §4 statement so the constant-dependence is visible at headline location. Source: `src/re/04-main-result.md:15`.
+
+### Opus-specific findings (M2, M3, M5, M6 + C3)
+
+- [ ] **M2 (loop-Level-2 proof misuses (C2) — `B-key-lemma-proofs.md:86–92`).** **Highest-priority new technical fix from Opus's audit.** The proof writes "(C2) gives `a_t ⊥ U | H_t`, *so* `P(o_{t+1} | a_t, H_t, U) = P(o_{t+1} | a_t, H_t)`" — the second statement does *not* follow from the first. (C2) gives `P(U | a_t, H_t) = P(U | H_t)`; the proof needs `o_{t+1} ⊥ U | (a_t, H_t)`, a different conditional independence. *Strengthening direction:* the lemma's conclusion stands; only the central calculation needs rewriting. Apply (C2) to the *prior on U* in the truncated factorization: `P(o_{t+1} | do(a_t), H_t) = ∑_U P(o_{t+1} | a_t, H_t, U) · P(U | H_t)` (truncated factorization under intervention) and `P(o_{t+1} | a_t, H_t) = ∑_U P(o_{t+1} | a_t, H_t, U) · P(U | a_t, H_t)` (ordinary marginalization); these equal iff `P(U | a_t, H_t) = P(U | H_t)`, which is exactly (C2). About 4–6 lines of surgery in `B-key-lemma-proofs.md`. The §5 mechanism prose version (`05-mechanism.md:36–47`) avoids this trap by quoting the conclusion rather than deriving it; that prose is fine. Verified independently — Opus is right.
+
+- [ ] **M3 (per-state qualifier missing from `lem-pointmass-identity` statement at `05-mechanism.md:7-10`).** The lemma statement reads as a single (state-free) action distribution, but `a*` is per-state and the composition theorem uses per-state `K_t(s)` and `\overline{TV}_t`. Trivial fix: add "(per visited state, with `a^* = a^*(s)` and `Q = Q(\cdot \mid s)`)" qualifier in the lemma statement. ~1 line.
+
+- [ ] **M5 (gain-decay class subtlety re Beta-Bernoulli on un-touched elements — `C-aux-material.md:73-77`).** The `𝒜_decay` class definition requires `α^{(t)} → 0` on every revisable element. Beta-Bernoulli with `η = 1/(n+1)` decays only on elements actually being updated; un-touched elements have un-decayed gain. Reviewer reading "the class includes count-accumulating Bayesian updates without forgetting" might assume Beta-Bernoulli is unconditionally in `𝒜_decay`. *Fix:* parenthetical clarification — "the class includes Beta-Bernoulli-style updates *under sustained pull on every revisable element*; agents that ignore a subset of elements are outside the class for those elements, but inside it for the elements they touch." ~1 line addition.
+
+- [ ] **M6 (chain-rule uniqueness proof is gestural — `C-aux-material.md:135-137`).** The reduction "the chain rule reduces to the functional equation `f(rs) = f(r) + r f(s)`" deserves more than a comma — that reduction is the substantive part of the proof; the functional-equation solution at the end is standard. *Fix:* add 5–8 lines walking through the chain-rule expansion at a 2-element joint distribution and showing the equation falls out. The conclusion "the metric layer is uniquely reverse-KL up to positive scaling under chain-rule additivity" cites this as load-bearing for one of the framework's distinctness claims, so the proof should not be sketch-grade.
+
+- [ ] **M4 (A5 base-learner conversion from value-side regret to occupancy-weighted TV — `04-main-result.md:36`, `D-algorithm.md:7`).** (A5) assumes a TV-side base-learner guarantee. UCRL2/UCBVI guarantees are typically stated in *value*, not occupancy-weighted TV. The conversion uses the simulation lemma in reverse and can lose factors. *Fix:* add a one-line citation to a paper that does the value-to-TV conversion explicitly (Foster / Krishnamurthy / Simchi-Levi are candidates per Opus, verify before adding), or show the conversion explicitly in `D-algorithm.md`.
+
+- [ ] **C3 (Vieillard-Pietquin "Leverage the Average" / KL-regularized RL connection).** The point-mass reverse-KL identity has a structural neighbor in KL-regularized RL — Vieillard-Pietquin-Munos-Geist *Leverage the Average* (NeurIPS 2020) and follow-up Mei-Xiao-Szepesvari et al. on policy gradient + KL-control. Their reverse-KL is from `π` to a reference `\bar π`; under deterministic `\bar π` their analysis would specialize to the identity. Worth a sentence in §2 Related Work or §F prior-art to position the contribution and defuse "but Vieillard et al…" pushback. Per-paper agent should verify the connection's form before adding the citation.
+
+### Minor refinements clustered into a single budget-pass writing pass (A2, A4, A5, A6, S1–S7, N1–N10, P1–P6 from Opus's audit)
+
+Opus's audit has ~20 smaller findings — argument-strength tweaks, prose/structure suggestions, citation cleanups, notation nits, page-pressure candidates. Each is real and well-flagged but individually tracking them in TODO would bloat the live tracker unhelpfully. They cluster into one project: a focused budget-pass writing review when the proof-repair (H1–H5 + M2 + M6) is stable. The full list lives in the archived audit at `_archive/audits/audit-2026-05-06-claude-opus47.md` for reference; the budget-pass agent should read it as a checklist.
+
+Highlights worth pulling out (not exhaustive):
+- *A2:* "the technical anchor" framing for the point-mass identity self-discounts. Component 2 is necessary for the per-round coordinate but Components 3 and 4 carry equal load. Rename to "the per-round metric coordinate" or similar.
+- *A4:* "coordinate-optimal among bounds depending only on TV" — non-standard terminology. Rephrase as "tight among bounds that depend only on TV (achieved on extremal value landscapes)."
+- *A5:* "lifts ProST's tempo result" — direction can be misread as "ProST + more dimensions" when the actual claim is "different type of statement." Clearer hinge sentence: "ProST asks 'what's the optimal tempo schedule?'; we ask 'is *any* schedule possible?', producing a structural threshold that ProST recovers as the optimization-friendly special case."
+- *A6:* Regime A/B/C taxonomy as framework contribution overstates — the contribution is the bias-bound `∝ (1-p_id)` in `lem-bias-bound`, not the regime taxonomy itself. Tone down accordingly.
+- *S2 / P3:* Repeated "no published framework / four-strands story" phrase appears 3+ times across intro / main-results / conclusion. Pick one canonical formulation.
+- *S5 / P2:* §5 Mechanism's "Perturbative extension" remark and "ProST as a sector-level reduction" remark could fold into one-line forward pointers. Saves ~10 lines.
+- *S6 / P1:* Roadmap+Contribution duplication in §1 — fold into one block.
+- *S4 / P5:* Practitioner takeaways (§6.2) read marketing-y — same content lives in `D-algorithm.md`. Cut if budget-pressured.
+- *N3, N4:* `Q_O` / `Q^π` / `Q_t` triple-shadowing of `Q` letter — one defining sentence in §3 prelims would help. `𝒯_Σ^{agg,ss}` first introduced in `D-algorithm.md` rather than §3 — define at the right scope.
+- *C1, C2, C5:* missing citations for Pinsker, sequential ignorability terminology, and refined-Pinsker comparisons. One-line additions each.
+- *M7, M8:* HLT reverse-ADT citation form-check (verify the cited theorem matches the form invoked); ε-greedy expansion's `ε log(1/q_0)` absorption clarifying sentence about joint limit.
 
 ### New findings from the self-read (N1–N5)
 

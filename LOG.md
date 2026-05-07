@@ -6,6 +6,54 @@ For active backlog see `TODO.md`. For umbrella-level history see `~/src/neurips/
 
 ---
 
+## 2026-05-07 — Opus auditor's findings landed; four-read triangulation complete
+
+The Opus 4.7 auditor's de-novo audit dropped at `audits/audit-2026-05-06-claude-opus47.md`. Substantially more thorough than Codex / Gemini / my own self-read combined: M1–M8 math correctness findings, A1–A9 argument-strength findings, plus prose / structure / citation / nit / page-pressure suggestions. Joseph's directive ("do not just take their findings at face value; verify; with Codex specifically, attempt strengthening before any softening") applies equally to the Opus audit.
+
+**Triangulation across four reads.** Two strong-convergence signals:
+
+1. **Forgetting-proof algebra error.** Codex H1 / my N4 / Opus M1 — three independent reads catch the same algebra hop at `B-key-lemma-proofs.md:72`. The proof correctly displays `V > ρ²/(2𝒯) gives negative drift`, then jumps to `R*² = ρ²/𝒯²` without justification. The honest steady state of the displayed inequality is `V ≤ ρ²/(2𝒯)`, giving `R* ≤ ρ/√(2𝒯)` — not `ρ/𝒯`. Three reads agreeing makes this the highest-confidence technical finding.
+
+2. **Headline-rate bias-term omission.** Codex H6 / my N1 / Opus A7 — three reads catch the same elision: theorem (v) has both `√((B_T+1) T)` rate term AND linear-in-T bias term `N_h(1-p_id)log(1/q_0)·T`; abstract / §1 intro / §6 conclusion all give just the rate without the bias. Cesàro tracking → 0 only in Regime A (where `p_id → 1`). Held for the strategy talk under "identity-vs-rate-as-headline" Q2.
+
+**Opus's most important new finding (M2): loop-Level-2 proof misuses (C2).** Verified against primary source — Opus is right. The proof at `B-key-lemma-proofs.md:88-89` writes "(C2) gives `a_t ⊥ U | H_t`, *so* `P(o_{t+1} | a_t, H_t, U) = P(o_{t+1} | a_t, H_t)`." The implication is wrong: `a_t ⊥ U | H_t` is equivalent to `P(U | a_t, H_t) = P(U | H_t)` (definition); the proof's intermediate step would require `o_{t+1} ⊥ U | (a_t, H_t)`, a different conditional independence. The right argument applies (C2) to the *prior on U* in the truncated factorization, not to the conditional on `o_{t+1}`. Lemma conclusion stands; ~4–6 lines of central-calculation surgery in §B. Codex *and* I both missed this — a substantive proof bug visible only on careful walk-through. Strong argument for the four-independent-read approach.
+
+**Other Opus-only new findings landed in TODO:** M3 (per-state qualifier in lemma statement, trivial), M4 (A5 base-learner conversion needs explicit citation or derivation), M5 (`𝒜_decay` class subtlety re Beta-Bernoulli on un-touched elements, parenthetical), M6 (chain-rule uniqueness proof is gestural, needs 5–8 lines of reduction), C3 (Vieillard-Pietquin "Leverage the Average" / KL-regularized RL connection — useful prior-art neighbor).
+
+**~20 smaller refinements** (A2-A6, S1-S7, N1-N10, P1-P6, C1-C2-C5) clustered into a single "budget-pass writing tightening" project in TODO rather than tracked individually. Examples: "technical anchor" framing self-discounts (A2); "coordinate-optimal" terminology non-standard (A4); ProST lift direction can be misread (A5); regime A/B/C taxonomy overstated as contribution (A6); repeated "no published framework" phrasing across intro/main/conclusion (S2/P3); §5 Mechanism could fold remarks into forward-pointers (S5/P2); Q_O / Q^π / Q_t notation triple-shadowing (N3); Pinsker / sequential-ignorability missing citations (C1/C2). Budget-pass agent should read the archived Opus audit as a checklist.
+
+**Updated triage and priorities (revised from yesterday).**
+
+*Tier 1 — proof-correctness fixes (theorem-repair pass per Codex's ordering advice):*
+- H1 / M1 / N4 (forgetting-proof scaling) — three-read convergence; spike priority.
+- M2 (loop-Level-2 (C2) misuse) — Opus-only but high-confidence on verification; ~5 line surgery.
+- H2 (bias-term V_max + clipping) — Codex-flagged; clean strengthening.
+- H3 (V_max double-count) — Codex-flagged; notational hygiene.
+- H4 (B_T optimum-change vs stationary-segment) — Codex-flagged; strengthening attempt then fallback.
+- H5 (A1 with deterministic UCB) — Codex-flagged; restriction or smoothing.
+
+*Tier 2 — small targeted fixes (quick wins between spikes):*
+- M3 (per-state qualifier) — 1 line.
+- M5 (gain-decay class clarification) — 1 line.
+- M6 (chain-rule proof expansion) — 5–8 lines.
+- C3 (Vieillard-Pietquin connection) — 1–2 lines in §2.
+
+*Tier 3 — owner-level decisions held for strategy talk:*
+- H6 / N1 / A7 (headline-rate bias-term and form-instability across abstract/§1/theorem/§6) — three-read convergence.
+- M2-Codex (bundle-vs-monolithic abstract framing) / N2 (numbering inconsistency abstract vs §1.1).
+- §5 mechanism narrative shape (paper-1 author flag).
+
+*Tier 4 — budget-pass writing tightening:*
+- §4.4 relocation to appendix (Gemini-flagged; case strengthened on self-read; Opus didn't object).
+- ~20 Opus-flagged refinements clustered (above).
+- BH/Pinsker repetition across abstract/§1/§4/§5/§E/§6 (Codex-flagged; Opus A3 confirmed wording inconsistency).
+
+The two Opus closing recommendations match my Tier 1 ordering: M2 first (highest-leverage technical fix, gives credibility hit to closed-loop access argument), M1 second.
+
+**Audit reports archived.** Both Opus audit (`audit-2026-05-06-claude-opus47.md`) and my self-read notes (`de-novo-self-read-2026-05-07.md`) move to `_archive/audits/` per AGENTS §3.4 — this LOG entry is the integration confirmation that prerequisites the move.
+
+---
+
 ## 2026-05-07 — Self-read of the rendered tex; hardcoded-ref bug fixed; N1–N5 findings landed
 
 While the Opus auditor was working an independent de-novo audit, I did my own first-hand cold read of `unified-rl-neurips-2026.tex` (the kramdown-emitted intermediate, since `pdftotext` flattens math). Per AGENTS §3.5: audit-grade work stays first-hand; the two independent reads will be more useful than one once Opus's findings land — convergence builds confidence, divergence is a learning signal.

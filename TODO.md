@@ -48,6 +48,18 @@ These are bare markdown tables (no `[!table]` callout wrapper), so the pipeline 
 
 …with `cols="l X X"` on the marker. That'll re-flow the long-prose cells within textwidth and eliminate the 1319pt clipping. The two narrower overflows (267pt / 167pt) are also good candidates for the same treatment — the prose-shaped cells in the diagnostic and mechanism tables benefit from `X`-column text-wrapping. Wrapping them in `[!table]` callouts also gives them captions + cross-ref anchors, which the bare markdown tables currently lack.
 
+**§E Pinsker-numerics table — different problem, different fix (correction to my earlier framing).** The `OUT.full-paper-re.md` build's §E table at `src/re/E-pinsker-numerics.md:5` is *already* a `[!table]` callout with `cols="r r r r r X"` — proper AUTHORING §1.4 form, you didn't miss anything there. (Joseph caught me assuming otherwise on inspection — I had pattern-matched it onto the bare-markdown cases above without checking the source. Apologies.) The actual rendering issue is that with six columns where five are math-heavy `r`-aligned numerics and only the last is `X`, tabularx's `r` columns claim natural width based on header content (especially the wide `$\min(\sqrt{D_{\mathrm{KL}}/2}, 1)$` header), leaving the X column with very little leftover space. tabularx then wraps the X content into a tall narrow column — "Pinsker / iden- tity ra- tio" header breaking vertically, "(Pinsker fully vac- u- ous)" cell content stacking. Visible in `paper-rc1.pdf` page 25 (Table 2). Note: tabularx-X never overflows horizontally, so this case doesn't show up in `Overfull \hbox` log warnings — it just wraps too narrowly. (My morning audit missed it for that reason; flagging the pattern so we both look for it next time.)
+
+Three layered options, additive rather than alternative:
+
+1. *Drop the redundant 5th column.* `$\min(\sqrt{D_{\mathrm{KL}}/2}, 1)$` is just the truncation of the previous column at the trivial envelope $V_{\max}=1$ — same value below $D_{\mathrm{KL}}=2$, capped at 1 above. Information-equivalent to a footnote symbol on saturated values in the Pinsker column. Drops one column, gives X significantly more room.
+
+2. *Move the prose annotations into a sentence below.* "(Pinsker = trivial)" / "(Pinsker vacuous)" / "(Pinsker fully vacuous)" are interpretive commentary mixed into the rightmost column — that's part of why X is fighting for space. Pull them into the explanatory sentence after the table: *"Beyond $D_{\mathrm{KL}}=2$, Pinsker hits the trivial envelope $V_{\max}=1$ (vacuous from $D_{\mathrm{KL}}=4$ onward, fully vacuous by $D_{\mathrm{KL}}=10$)."* Now the table is a clean numeric grid and the interpretation has prose room.
+
+3. *Rename the rightmost header.* "Pinsker / identity ratio" → just "ratio" — the previous columns make clear what's being rationed. Saves header width.
+
+(1)+(2)+(3) together turn the 6-column table into a 5-column clean numeric grid with a clarifying sentence below, and the rendering problem disappears as a side effect rather than needing a layout fix. Either of the three on its own helps a bit; combining them helps a lot. Author judgment call on which combination feels right.
+
 ---
 
 ## Migration milestones (agent #2, 2026-05-05) — landed

@@ -91,7 +91,7 @@ Under uniform blocks $\Delta_i = T/K$ the condition reduces to $K/T > \rho_\Sigm
 
 ### Proof of Key Lemma 3 (Loop generates interventional samples) ^sec-proof-key-lemma-3
 
-By temporal ordering and the singular-trajectory commitment of [[#^sec-preliminaries]], $a_t$ causally precedes $o_{t+1}$. We invoke Pearl's do-calculus \cite{pearl-2009-causality} (Theorem 3.4.1, Rule 2 — *action/observation exchange*):
+By temporal ordering and the singular-trajectory commitment of [[#^sec-preliminaries]], $a_t$ causally precedes $o_{t+1}$. We invoke Pearl's back-door criterion \cite{pearl-2009-causality} (Theorem 3.3.2):
 $$P(o_{t+1} \mid \mathrm{do}(a_t), H_t) \;=\; P(o_{t+1} \mid a_t, H_t) \quad \text{whenever}\quad (o_{t+1} \perp\!\!\!\perp a_t \mid H_t)_{G_{\overline{a_t}}},$$
 where $G_{\overline{a_t}}$ denotes the graph $G$ with all incoming arrows to $a_t$ removed. In the singular-trajectory + agent-as-policy graph of [[#^sec-preliminaries]], the only arrows into $a_t$ come from $H_t$ (the agent's policy is $\pi_t(a_t \mid H_t)$); deleting them severs the only confounding path from $a_t$ to $o_{t+1}$. Whether $H_t$ d-separates $a_t$ from $o_{t+1}$ in $G_{\overline{a_t}}$ is precisely the content of (C2). The identity $P(o_{t+1} \mid \mathrm{do}(a_t), H_t) = P(o_{t+1} \mid a_t, H_t)$ holds on the support where $\pi_t(a_t \mid H_t) > 0$, which is automatic since $a_t$ was drawn from $\pi_t$. $\square$
 

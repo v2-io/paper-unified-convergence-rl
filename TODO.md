@@ -192,3 +192,13 @@ The bib database has all entries needed (per dry-run; only one missing — see b
 - **Empirical-validation absence risk: medium.** NeurIPS reviewers expect empirical validation. Mitigations: (a) BH identity is mathematically airtight; (b) worked-example reduction to Lee et al. ProST gives empirical grounding via their experiments; (c) honest "theory paper" framing in §9 limitations.
 - **Citation-hallucination risk: low-medium.** Lee et al. ProST 2023/2024, Long-Fei Li-Zhao-Zhou 2024 are recent — verify carefully; Bareinboim, Russo-Van Roy, Bretagnolle-Huber 1978 well-cited and stable.
 - **Scope-creep risk: medium.** The composition theorem invites extending beyond four components to strategic-DAG details, edge-update gain derivations. Hold the line at four named components; defer everything else to appendices or follow-up.
+
+---
+
+## Bibliography acronym-casing — fixed 2026-05-07 (build-pipeline owner)
+
+You flagged "Mdps with unobserved confounders" / "Causal mdps" / "Efficient rl" / "(dovi)" lowercasing in the rendered references. Confirmed and fixed at the YAML→bib emit step in `bin/refs`. Diagnosis: not kramdown — `bibtex`'s `unsrtnat` style applies title-case rules (lowercase everything past the first letter) to single-braced title fields. Fix: emit `title = {{...}}` (double-braced, no-case-change protected group) instead of `title = {...}`. YAML titles stay in canonical published case as the source of truth; rendering is now verbatim.
+
+Schema doc updated at `refs/README.md`. Acronym scope confirmed across the database — affects every entry with `MDPs` / `RL` / `LLMs` / `NeurIPS` / `DOVI` / etc. in the title; one-line code change covers all of them. Other case-sensitive fields (`booktitle`, `journal`, `publisher`) aren't case-changed by `unsrt`/`unsrtnat` so they don't need the same wrap.
+
+Next build will pick up the fix automatically — no action required from you. Verify on rebuild that the references page renders `MDPs with unobserved confounders` / `Efficient RL` / `DOVI` correctly.

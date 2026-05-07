@@ -4,64 +4,6 @@
 
 ---
 
-## Read-through notes — 2026-05-06 (rc1 = `OUT.full-paper-re.md`)
-
-Read through `out/full-paper-re.pdf` carefully. Genuinely strong — the four-component composition reads as one argument now, not four parallel pieces. A few reactions and a few suggestions:
-
-**What's working well:**
-
-1. *Related-work organization.* Six named lineages (variation-budget dynamic regret, two-term decompositions, tempo and forgetting, causal/interventional access, info-theoretic regret cross-cutting, satisficing/feasibility adjacent, contemporaneous post-March-2026), each with explicit "Same shape, different axis" or "We compose with non-stationarity" discrimination. This reads as a contribution-distinguishing prior-art map rather than a literature dump. Reviewers love this shape.
-2. *Honest scope statements.* "Theory only / No experiments. The point-mass identity is mathematically airtight..." and "Canonical scope" + "Comparator regime" make the paper's limits visible immediately rather than requiring §6 archaeology to find. AUTHORING §3.3 voice discipline at work.
-3. *Title.* Colon-free, descriptive, fits §6.1 alternative form: "A Unified Convergence Theory for Non-Stationary Reinforcement Learning." Easy to remember; the four-component composition is the hook in §1, not the title.
-4. *Point-mass identity placement.* The exact algebraic form `TV(δ_{a^*}, Q) = 1 - e^{-D_KL}` lands as a closed-form identity rather than an inequality, and the strict-tighter-than-Pinsker-and-BH framing in §1.2 is doing genuine novelty-positioning work. Worth keeping that as a load-bearing thread through §4 and §C.
-
-**Suggestions:**
-
-1. *Abstract shape — the (i)-(iv) enumeration reads as a TOC, not a result-arc.* The four-component bullet-prose listing through the middle of the abstract gives a reviewer who skims a punch list of structural ingredients rather than an arc that lands a result. AUTHORING §6.3 frames the abstract as "what we do → how we do it → what we find" — so the gap-and-compose framing → rate → identity-vs-Pinsker tightness → orthogonal-axis distinction from the frequency lineage would read as a single arc, with the (i)-(iv) breakdown landing in the §1.2 contributions list where it has room. The "structural failure class" / "perturbative extension" / "ProST reduction" closing details are also each their own §1.2 paragraph; the abstract closing tightens if it ends on the orthogonal-axis-to-frequency framing.
-2. *Wide-table overflow at §F (extended related work).* The 7-row strand-comparison table at `src/08-related-work.md:5` is currently a bare markdown table emitting `\begin{tabular}{lll}` with natural-width columns — and the middle column has multi-cite bibkey lists that don't break across lines. lualatex's compile log shows a 1319.59 pt overfull-hbox warning on this table, meaning a column runs ~18 inches past `\textwidth` (content silently clips off the right page edge in the rendered PDF). AUTHORING §1.4 covers wide tables: wrap in a `[!table] cols="l X X" ^tab-related-work-strands` callout and the `X` columns text-wrap within `\textwidth`. The same treatment helps the §3 two-gap diagnostic (167pt over) and §5 strategic-tempo mechanism table (267pt over). All three are flagged with concrete recipes earlier in this Inbox.
-3. *Closing-sentence tone in abstract.* "Theory-only; Lemma 5.2 makes the ProST reduction rigorous at the sector-parameter level, while their published experiments motivate the strategic-tempo component" reads slightly defensive — "theory-only" + "motivate via others' experiments" is two scope-acknowledgments in one sentence. Consider closing on the result rather than the limit; the scope already lives in §1's "Theory only" callout, no need to double it in abstract.
-4. *Forward `(2)` ref in abstract or main text.* Numbered eqref forms render fine via `[[#^eq-...]]` (AUTHORING §1.7 / §2.2). Spot-check that any "as in (2)" prose in §3+ uses anchored cross-refs not literal numbers — the anchored form survives reorganization, the literal form drifts silently.
-
----
-
-## Inbox — flagged 2026-05-06 by build-pipeline agent
-
-**Page-budget reality check.** `bin/build 02-unified-convergence-rl neurips-2026-paper` currently produces a 22-page PDF; main text (§1–§9) ends at page 12, References starts at page 13. That's **3 pages over** the 9-page main-text limit — the existing manifest already comments out appendices B/C/D/E but the body is still long. The migration agent's earlier note ("9pp draft cut … A and F kept as load-bearing; G kept for main proofs") was about appendix selection; main-text trim hasn't happened yet. Suggested next: either (i) deeper segment-level compression (the OUTLINE risk register identified candidates: §6.1 fold to footnote, §6.5 collapse to paragraph, §5.7/§5.8 unify, §5.6 Theorem 5.5 to Appendix C), or (ii) commit to a heavier appendix shift. Please verify the actual numbers via `pdfinfo out/neurips-2026-paper.pdf` and update the OUTLINE before deciding.
-
-**Bold-prefix vs callout form — verify intentional.** `src/A-supporting-material.md:21` uses `**Corollary.** $\delta_{\mathrm{sat}}^{\mathrm B} \le \dots$` as a paragraph-prefix. AUTHORING §1.1 prefers Obsidian `> [!corollary] ^anchor` for theorem-shaped semantic blocks; AUTHORING §1.9 allows bold-prefix for plain paragraph headings. The corollary at line 21 has no number and no cross-ref, so bold-prefix may be intentional — but if the claim is referenced anywhere or warrants a numbered counter, it should move to a callout. Quick read: if `\Cref{cor-…}` is wanted, convert; otherwise leave.
-
-**Three wide-table overflows — `[!table] cols="..."` refactor candidate.** lualatex compile log reports three overfull-hbox warnings on bare markdown tables, with the worst at **1319 pt too wide** (≈18 inches past page edge — content silently runs off the page in the rendered PDF):
-
-- `src/08-related-work.md:5` — *Strand × Closest neighbors × Our distinction* table. The middle column has multi-cite bibkey lists that don't break across lines. **1319.59pt overfull** — the worst of the three; clipping is severe.
-- `src/05-strategic-tempo.md:74` — *Mechanism × α_Σ^ss × Prerequisite-holds-iff* table. **267.20pt overfull**.
-- `src/03-two-gap-diagnostic.md:25` — Two-Gap 2×2 diagnostic table with prose-shaped cells. **167.13pt overfull**.
-
-These are bare markdown tables (no `[!table]` callout wrapper), so the pipeline emits them as `\begin{tabular}{lll}` with natural-width columns — fine for narrow tables, broken for prose-cell tables. Wrap each in a captioned + anchored `[!table]` callout with `cols="l X X"` (or as appropriate) per AUTHORING §1.4. The `X` columns wrap text within `\textwidth`. Concrete example for the related-work strand table:
-
-```
-> [!table] Closest-neighbor strands and their distinctions. ^tab-related-work-strands
-> 
-> | Strand | Closest neighbors | Our distinction |
-> |:-------|:------------------|:----------------|
-> | 1. Dynamic regret under drift | \cite{cheung-2020-reinforcement, ...} | Recovered as instances ... |
-```
-
-…with `cols="l X X"` on the marker. That'll re-flow the long-prose cells within textwidth and eliminate the 1319pt clipping. The two narrower overflows (267pt / 167pt) are also good candidates for the same treatment — the prose-shaped cells in the diagnostic and mechanism tables benefit from `X`-column text-wrapping. Wrapping them in `[!table]` callouts also gives them captions + cross-ref anchors, which the bare markdown tables currently lack.
-
-**§E Pinsker-numerics table — different problem, different fix (correction to my earlier framing).** The `OUT.full-paper-re.md` build's §E table at `src/re/E-pinsker-numerics.md:5` is *already* a `[!table]` callout with `cols="r r r r r X"` — proper AUTHORING §1.4 form, you didn't miss anything there. (Joseph caught me assuming otherwise on inspection — I had pattern-matched it onto the bare-markdown cases above without checking the source. Apologies.) The actual rendering issue is that with six columns where five are math-heavy `r`-aligned numerics and only the last is `X`, tabularx's `r` columns claim natural width based on header content (especially the wide `$\min(\sqrt{D_{\mathrm{KL}}/2}, 1)$` header), leaving the X column with very little leftover space. tabularx then wraps the X content into a tall narrow column — "Pinsker / iden- tity ra- tio" header breaking vertically, "(Pinsker fully vac- u- ous)" cell content stacking. Visible in `paper-rc1.pdf` page 25 (Table 2). Note: tabularx-X never overflows horizontally, so this case doesn't show up in `Overfull \hbox` log warnings — it just wraps too narrowly. (My morning audit missed it for that reason; flagging the pattern so we both look for it next time.)
-
-Three layered options, additive rather than alternative:
-
-1. *Drop the redundant 5th column.* `$\min(\sqrt{D_{\mathrm{KL}}/2}, 1)$` is just the truncation of the previous column at the trivial envelope $V_{\max}=1$ — same value below $D_{\mathrm{KL}}=2$, capped at 1 above. Information-equivalent to a footnote symbol on saturated values in the Pinsker column. Drops one column, gives X significantly more room.
-
-2. *Move the prose annotations into a sentence below.* "(Pinsker = trivial)" / "(Pinsker vacuous)" / "(Pinsker fully vacuous)" are interpretive commentary mixed into the rightmost column — that's part of why X is fighting for space. Pull them into the explanatory sentence after the table: *"Beyond $D_{\mathrm{KL}}=2$, Pinsker hits the trivial envelope $V_{\max}=1$ (vacuous from $D_{\mathrm{KL}}=4$ onward, fully vacuous by $D_{\mathrm{KL}}=10$)."* Now the table is a clean numeric grid and the interpretation has prose room.
-
-3. *Rename the rightmost header.* "Pinsker / identity ratio" → just "ratio" — the previous columns make clear what's being rationed. Saves header width.
-
-(1)+(2)+(3) together turn the 6-column table into a 5-column clean numeric grid with a clarifying sentence below, and the rendering problem disappears as a side effect rather than needing a layout fix. Either of the three on its own helps a bit; combining them helps a lot. Author judgment call on which combination feels right.
-
----
-
 ## Migration milestones (agent #2, 2026-05-05) — landed
 
 - [x] **Scaffolding** — dirs + `.gitignore` + `meta.md` + `LOG.md` + this file. Commit `9dd4cd7`.
@@ -69,7 +11,7 @@ Three layered options, additive rather than alternative:
 - [x] **Appendix segments A–G + manifests** — `src/A-supporting-material.md` (with A.1–A.8 sub-headings) + `src/B-pinsker-numerics.md` + `src/C-chain-rule-uniqueness.md` + `src/D-prior-art-summary.md` + `src/E-algorithm-sketch.md` + `src/F-bias-bound.md` + `src/G-proof-sketches.md`. `OUT.full-paper.md` (everything) + `OUT.neurips-2026-paper.md` (9pp draft cut — appendix B/C/D/E commented out via `<!-- ... -->` per AUTHORING §7.2; A and F kept as load-bearing; G kept for main proofs). Manifest narrative explains the cut rationale and flags within-segment compression as per-paper-agent territory. Commit `7832b79`.
 - [x] **Citation migration** — `bin/migrate-cites --apply` rewrote 22 single-cite occurrences across 10 segments. Multi-cite groups `[A Year; B Year; ...]` intentionally skipped by the migrate-cites regex (per PIPELINE-TODO §C1.4); per-paper agent hand-converts those. One missing entry surfaced: `[Zhang-Bareinboim 2022]` in §D needs `bin/refs add junzhe-zhang-bareinboim-2022-online`. Commit `2f9d466`.
 - [x] **`prior-art/` ported** — `query.md`, `report.md`, `positioning.md` copied verbatim from `~/src/neurips2026/02-convergence/prior-art/`.
-- [ ] **Build verification — blocked.** `bin/build 02-unified-convergence-rl OUT.full-paper.md` failed at lualatex pass 1 with three kramdown-converter rendering bugs filed at umbrella `PIPELINE-TODO.md ## Inbox` (commit `654da9c`): (1) bold-prefix paragraph + immediately-following `$$display$$` math emits unbalanced `\begin{equation}…$$`; (2) `[[#^anchor]](text)` parses as markdown link `[label](url)`; (3) unescaped `|…|` in inline math triggers kramdown table parser. Build verification waits on pipeline-owner fixes. Per-paper agent should re-run `bin/build` once the inbox bugs land as `RESOLVED-IN-<commit>`.
+- [x] **Build verification.** Originally blocked on three kramdown-converter rendering bugs at umbrella `PIPELINE-TODO.md ## Inbox` (commit `654da9c`): bold-prefix + `$$display$$` collision, `[[#^anchor]](text)` link-parser collision, `|…|` table-parser collision. All three resolved during the build-pipeline owner's pass; `bin/build` now runs cleanly under the post-`d24c9e8` refactored pipeline. See LOG `2026-05-06 (continued)` for the verification run.
 
 ---
 
@@ -158,19 +100,3 @@ The bib database has all entries needed (per dry-run; only one missing — see b
 - **Empirical-validation absence risk: medium.** NeurIPS reviewers expect empirical validation. Mitigations: (a) BH identity is mathematically airtight; (b) worked-example reduction to Lee et al. ProST gives empirical grounding via their experiments; (c) honest "theory paper" framing in §9 limitations.
 - **Citation-hallucination risk: low-medium.** Lee et al. ProST 2023/2024, Long-Fei Li-Zhao-Zhou 2024 are recent — verify carefully; Bareinboim, Russo-Van Roy, Bretagnolle-Huber 1978 well-cited and stable.
 - **Scope-creep risk: medium.** The composition theorem invites extending beyond four components to strategic-DAG details, edge-update gain derivations. Hold the line at four named components; defer everything else to appendices or follow-up.
-
----
-
-## Build-pipeline notice — 2026-05-06 (build-pipeline owner)
-
-The umbrella build interface refactored at commit `d24c9e8` (`SPEC-build-refactor.md` for the design discussion). Practical changes you'll see in the working tree on first build:
-
-- **New ephemeral build dir.** `<paper>/.build/<stem>/` replaces `<paper>/out/`. Holds the rendered `.tex`, the auto-emitted `<stem>.references.bib`, lualatex intermediates, and the canonical `<stem>.pdf`. Worth `.gitignore`-ing (`.build/`) when convenient.
-- **PDF snapshot-and-swap.** On each build, `<stem>.pdf` moves to `<stem>.prior.pdf` first, then the fresh PDF lands as `<stem>.pdf`. A failed build leaves the prior PDF as the last-known-good. `*.prior.pdf` is also worth `.gitignore`-ing.
-- **New tracked artifact.** `<stem>.extracted.bib` is a repo-visibility snapshot of the bib that bibtex actually used. Naming is explicit-on-purpose so it's obvious-by-construction that it's a build artifact (canonical edits go through `bin/refs add` / `refs/entries/<key>.yml`). Recommended to track for diff visibility.
-- **`<paper>/refs.bib` is now an orphan.** The build no longer reads or writes it — `bin/refs emit` runs automatically before each compile and writes to `.build/<stem>/<stem>.references.bib`. Existing `<paper>/refs.bib` files just sit there until you remove them. Note: agents shouldn't have been hand-editing `refs.bib` directly anyway; if there are local edits in there worth preserving, they belong as YAML at `refs/entries/<key>.yml` (run `bin/refs add` to land them properly).
-- **`<paper>/out/` is also an orphan.** Same story — build no longer touches it; remove at your leisure.
-
-CLI gained cwd-aware behavior — from inside your paper-dir, `bin/build` (no args) now builds all your manifests. `bin/build <stem>` from cwd builds one. The umbrella forms (`bin/build <paper-dir> [<stem>]`, `bin/build --all`) still work.
-
-No action required from you; the next time you run a build, the new artifacts appear and you can clean up `out/` + `refs.bib` at any point.

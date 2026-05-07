@@ -6,6 +6,20 @@ For active backlog see `TODO.md`. For umbrella-level history see `~/src/neurips/
 
 ---
 
+## 2026-05-06 (cleanup) — TODO.md stale sections folded into LOG history
+
+Three sections of `TODO.md` had outlived their use and got pulled out so the live tracker reflects only live work:
+
+- **Read-through notes (build-pipeline agent's review of `paper-rc1.pdf`).** Strengths already itemized in the 2026-05-06 archival-pass entry above; suggestions either held for the strategy talk (abstract shape, closing-sentence tone) or rendered moot by `3e1a111`'s archival of the migration trim-survivor (the §F wide-table-overflow flag pointed at `src/08-related-work.md` which is now `_archive/migration-src/08-related-work.md`, no longer in any active manifest). The forward-`(2)`-ref spot-check is a one-time discipline note on cross-ref hygiene that doesn't need a TODO slot to live in — AUTHORING §1.7 / §2.2 cover it as standing convention.
+- **Inbox flagged 2026-05-06 by build-pipeline agent.** Most concrete asks pointed at paths under `src/*.md` (the migration trim-survivor) which `3e1a111` archived to `_archive/migration-src/`, making the wide-table-overflow recommendations (1319pt at `src/08-related-work.md:5`, 267pt at `src/05-strategic-tempo.md:74`, 167pt at `src/03-two-gap-diagnostic.md:25`) all moot — no active manifest builds those paths. The page-budget reality check on `OUT.neurips-2026-paper` is moot for the same reason (manifest archived as `_archive/OUT.neurips-2026-paper-migration.md`). The bold-prefix-vs-callout question on `src/A-supporting-material.md:21` is moot (file archived). The §E Pinsker-numerics fix landed in `d35e6fd` (this session). All paths now resolved or archived; nothing carried forward.
+- **Build-pipeline notice (BUILD-CHANGE.md announcement).** Adopted in `cb5e6fb` (this session): `out/` removed, `refs.bib` removed, `.gitignore` updated to ignore `.build/` and `*.prior.pdf`, `full-paper-re.pdf` and `full-paper-re.extracted.bib` tracked. The 2026-05-06 (continued) entry below covers the substance; the duplicated TODO section was a heads-up for a per-paper agent who hadn't yet adopted, which I have.
+
+Also marked the migration-milestones list's `[ ] Build verification — blocked` line as resolved — the three kramdown-converter rendering bugs that originally blocked it (bold-prefix + `$$display$$` collision, `[[#^anchor]](text)` link-parser collision, `|…|` table-parser collision) were fixed during the build-pipeline owner's pass, and `bin/build` now runs cleanly under the new pipeline. The migration-milestones list itself stays in TODO as quick-orientation context for any agent picking up B-CS1 work.
+
+What stays in TODO: Pass-5 carry-over (the per-paper-agent items — coherence drifts, free-trim candidates, compression candidates, reviewer-objection axes), preflight checklist (anonymization grep, citation verification, no-self-citation, etc.), citation-migration remaining work (multi-cite group hand-conversion, missing `junzhe-zhang-bareinboim-2022-online` bib entry), risk register. All real future-work items.
+
+---
+
 ## 2026-05-06 (continued) — Build-pipeline refactor adopted; §E table redesigned
 
 Resumed after the umbrella's `bin/build` interface refactor landed (umbrella `d24c9e8`; `BUILD-CHANGE.md` is the orientation doc). First action was confirming the new cwd-aware default works from inside the paper-dir: `bin/build` (no args) found `OUT.full-paper-re.md`, ran `bin/refs emit` to generate `.build/full-paper-re/full-paper-re.references.bib` from the umbrella YAML database, compiled cleanly, and printed the integrated page-budget report inline (13pp main-text, +4 over 9pp; appendices start p16, §E p25, §F p26). New tree artifacts after build: `.build/full-paper-re/` (ephemeral), `full-paper-re.pdf` (canonical), `full-paper-re.prior.pdf` (last-known-good snapshot), `full-paper-re.extracted.bib` (repo-visibility snapshot of the bib bibtex actually used). The pre-refactor `out/` and `refs.bib` are now orphans, both staged for a separate cleanup pass (not yet done).

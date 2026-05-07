@@ -73,6 +73,8 @@ $$\mathcal A_{\mathrm{decay}} \;:=\; \big\{\text{updates whose effective sector 
 > [!proof]
 > At every element $(i, j)$, $\alpha_{ij}^{(t)} \to 0$ by definition of $\mathcal A_{\mathrm{decay}}$, so $\min_{(i,j)} \alpha_{ij}^{(t)} \to 0$, so the bottleneck $\mathcal T_\Sigma^{\mathrm{bn}} \to 0$ with experience. Once $\mathcal T_\Sigma^{\mathrm{bn,ss}} < \rho_\Sigma/R_\Sigma$, the threshold is violated. This holds *regardless of prior calibration*: at any finite calibration level, the gain decays below threshold once enough experience accumulates.
 
+*Scope clarification (per-element pull).* The class definition requires $\alpha_{ij}^{(t)} \to 0$ on *every* revisable element — i.e., the agent is being pulled at every element repeatedly. Beta-Bernoulli with $\eta_{\mathrm{edge}, ij} = 1/(n_{ij}+1)$ is in the class only for elements actually being updated; an agent that ignores a subset of elements is outside the class for those elements (their gain remains at initial calibration), but inside it for the elements it does touch. The theorem applies to the touched elements; persistence on the untouched ones reduces to whatever calibration was set initially.
+
 This is a *structural* failure of the class, not a tuning problem. The class includes:
 - Count-accumulating Bayesian updates without forgetting (e.g., Beta-Bernoulli with $\eta_{\mathrm{edge},ij} = 1/(n_{ij}+1)$ where $n_{ij} \to \infty$).
 - Bounded-memory schemes with growing memory.
@@ -132,7 +134,14 @@ The causal-RL line \cite{zhang-2016-mdps, zhang-2022-online-rl, lu-2021-causal, 
 > holds for all joint distributions if and only if $f(t) = c \cdot t \log t$ for some $c > 0$ — i.e., $D_f$ is reverse-KL up to positive scaling.
 
 > [!proof]
-> Writing $r_x = P(x)/Q(x)$ and $s_{y|x} = P(y|x)/Q(y|x)$, the chain rule reduces to the functional equation $f(rs) = f(r) + r f(s)$ for all $r, s > 0$. With $f(1) = 0$ and convexity, the unique solution is $f(t) = c \cdot t \log t$ for $c > 0$ \cite{aczel-1975-measures} (§4).
+> Take any joint $P_{XY}, Q_{XY}$ on a finite product space. Writing $r_x := P(x)/Q(x)$ and $s_{y \mid x} := P(y \mid x)/Q(y \mid x)$, the joint ratio factorizes as $P_{XY}(x,y)/Q_{XY}(x,y) = r_x \cdot s_{y \mid x}$. Expanding both sides of the chain rule:
+> $$D_f(P_{XY} \,\|\, Q_{XY}) \;=\; \sum_{x,y} Q_{XY}(x,y)\, f(r_x s_{y \mid x}) \;=\; \sum_x Q(x) \sum_y Q(y \mid x)\, f(r_x s_{y \mid x}),$$
+> $$D_f(P_X \,\|\, Q_X) + \mathbb E_{P_X}[D_f(P_{Y \mid X} \,\|\, Q_{Y \mid X})] \;=\; \sum_x Q(x)\, f(r_x) + \sum_x P(x) \sum_y Q(y \mid x)\, f(s_{y \mid x}),$$
+> the second term using $\mathbb E_{P_X} = \sum_x P(x) = \sum_x Q(x) r_x$. Equating and collecting:
+> $$\sum_x Q(x) \biggl[\sum_y Q(y \mid x)\, f(r_x s_{y \mid x}) \;-\; f(r_x) \;-\; r_x \sum_y Q(y \mid x)\, f(s_{y \mid x})\biggr] \;=\; 0.$$
+> The chain rule must hold for *all* joints, including those where $r_x$ takes arbitrary positive value at one $x$ and $s_{y \mid x}$ varies independently — which forces the bracketed expression to vanish pointwise. A two-point reduction (take $Y$ binary with $s_{y \mid x}$ taking values $s$ and $1/s$ on equal-weight $Q(y \mid x)$) collapses the inner sums and yields the functional equation
+> $$f(rs) \;=\; f(r) \;+\; r\, f(s) \quad \text{for all } r, s > 0.$$
+> With $f$ convex and $f(1) = 0$, the unique solution is $f(t) = c \cdot t \log t$ for $c > 0$ \cite{aczel-1975-measures} (§4) — this gives $D_f(P \,\|\, Q) = c \sum_x Q(x) (P(x)/Q(x)) \log(P(x)/Q(x)) = c \sum_x P(x) \log(P(x)/Q(x)) = c \cdot D_{\mathrm{KL}}(P \,\|\, Q)$, reverse-KL up to positive scaling. $\square$
 
 **References.** Hobson 1969 ("A new theorem of information theory," *J.\ Stat.\ Phys.*); Csiszár 1991 ("Why least squares and maximum entropy?" *Annals of Statistics*; Theorem 3 corollary, Theorem 5); Shore-Johnson 1980 ("Axiomatic derivation of the principle of maximum entropy," *IEEE Trans.\ Info.\ Theory*, system-independence axiom); Sanov 1957 (large-deviation rate function); Aczél-Daróczy 1975 (functional-equation machinery).
 

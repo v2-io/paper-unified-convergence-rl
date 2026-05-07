@@ -68,7 +68,7 @@ $$\mathbb E[\mathrm{DynReg}(T)] \;\le\; \tilde O\!\left(V_{\max}\, N_h \cdot \mi
 
 ### Component-by-component failure-mode analysis ^sec-necessity
 
-The headline §4.3 unpacking observes that the four components compose into a *compatible bundle*: the rate (v) goes through (A5) and (i) alone, while the joint properties — rate plus persistence plus learnability plus corrective-action routing — require all four. This appendix unpacks the failure modes component-by-component for the natural reviewer question "why exactly four?".
+This composition is a *bundle of compatible guarantees* (each conclusion supported by its own assumptions), not a single integrated theorem in which every component is necessary for the rate. The rate (v) goes through (A5) and (i) alone; the joint properties — rate plus persistence plus learnability plus corrective-action routing — require all four. The failure modes component-by-component:
 
 **Without Component 2 (point-mass identity).** The per-round bound is Pinsker $V_{\max}\sqrt{D_{\mathrm{KL}}/2}$ or BH $V_{\max}\sqrt{1 - e^{-D_{\mathrm{KL}}}}$ — both strictly looser at this corner; Pinsker is vacuous for $D_{\mathrm{KL}} > 2$. The metric layer loses *exactness*, and the "behavior-cloning loss against optimal trajectory" interpretation of the cumulative coordinate vanishes.
 

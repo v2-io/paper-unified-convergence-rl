@@ -4,7 +4,7 @@ This appendix gives full proofs of the four key lemmas surfaced in [[#^sec-mecha
 
 ### Proof of Key Lemma 1 (Point-mass reverse-KL/TV identity) ^sec-proof-key-lemma-1
 
-For deterministic $\pi^* = \delta_{a^*}$ and any policy $Q$ with $Q(a^*) > 0$:
+For deterministic $\pi^* = \delta_{a^*}$ and any policy $Q$ (extending $D_{\mathrm{KL}} = +\infty$ when $Q(a^*) = 0$, which gives $1 - e^{-D_{\mathrm{KL}}} = 1 = \operatorname{TV}$ trivially):
 
 The reverse-KL collapses under the point-mass:
 $$D_{\mathrm{KL}}(\delta_{a^*} \,\|\, Q) \;=\; \sum_a \delta_{a^*}(a) \log\frac{\delta_{a^*}(a)}{Q(a)} \;=\; \log\frac{1}{Q(a^*)} \;=\; -\log Q(a^*),$$

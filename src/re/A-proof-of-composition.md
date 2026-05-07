@@ -6,7 +6,7 @@ This appendix gives the full proof of [[#^thm-composition]]. The proof composes 
 
 ### Proof of (i) — Per-round identity-bounded regret
 
-For deterministic $\pi^*_t = \delta_{a^*_t(s)}$ and any $Q_t(\cdot \mid s)$ with $Q_t(a^*_t(s) \mid s) > 0$ at every visited state (which is (A1)), Key Lemma 1 ([[#^lem-pointmass-identity]], full proof in [[#^sec-proof-key-lemma-1]]) gives the exact identity $\operatorname{TV}(\delta_{a^*_t(s)}, Q_t(\cdot \mid s)) = 1 - e^{-K_t(s)}$. Composed with the per-state TV-regret bounds (full proofs in [[#^sec-proof-key-lemma-1]] and [[#^sec-aux-action-gap]]):
+For deterministic $\pi^*_t = \delta_{a^*_t(s)}$ and any $Q_t(\cdot \mid s)$, Key Lemma 1 ([[#^lem-pointmass-identity]], full proof in [[#^sec-proof-key-lemma-1]]) gives the exact identity $\operatorname{TV}(\delta_{a^*_t(s)}, Q_t(\cdot \mid s)) = 1 - e^{-K_t(s)}$ in the extended real sense (when $Q_t(a^*_t(s) \mid s) = 0$, $K_t(s) = +\infty$ and both sides equal $1$, recovering the trivial bound). Composed with the per-state TV-regret bounds (full proofs in [[#^sec-proof-key-lemma-1]] and [[#^sec-aux-action-gap]]):
 $$\Delta_{\min} \cdot \operatorname{TV}(\delta_{a^*_t(s)}, Q_t(\cdot \mid s)) \;\le\; R(Q_t \mid s) \;\le\; V_{\max} \cdot \operatorname{TV}(\delta_{a^*_t(s)}, Q_t(\cdot \mid s)),$$
 substituting the identity yields conclusion (i): $\Delta_{\min}(1 - e^{-K_t(s)}) \le R(Q_t \mid s) \le V_{\max}(1 - e^{-K_t(s)})$. $\square$
 

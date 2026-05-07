@@ -5,9 +5,9 @@ This section overviews the proof of [[#^thm-composition]] via four key lemmas ch
 ### Key Lemma 1: Point-mass reverse-KL/TV identity ^sec-key-lemma-1
 
 > [!lemma] Point-mass reverse-KL/TV identity ^lem-pointmass-identity
-> For deterministic $\pi^* = \delta_{a^*}$ and any policy $Q$ with $Q(a^*) > 0$,
+> For deterministic $\pi^* = \delta_{a^*}$ (per visited state, with $a^* = a^*(s)$ and $Q = Q(\cdot \mid s)$) and any policy $Q$,
 > $$D_{\mathrm{KL}}(\pi^* \,\|\, Q) \;=\; -\log Q(a^*) \;=\; -\log\bigl(1 - \operatorname{TV}(\pi^*, Q)\bigr),$$
-> equivalently $\operatorname{TV}(\pi^*, Q) = 1 - e^{-D_{\mathrm{KL}}(\pi^* \,\|\, Q)}$.
+> equivalently $\operatorname{TV}(\pi^*, Q) = 1 - e^{-D_{\mathrm{KL}}(\pi^* \,\|\, Q)}$. The identity is read in the extended real sense: when $Q(a^*) = 0$ both sides equal $1$, with the natural convention $D_{\mathrm{KL}} = +\infty$ and $e^{-\infty} = 0$ — the identity holds for *all* policies $Q$, including Diracs at suboptimal actions.
 
 *Intuition.* The reverse-KL collapses under the point-mass: $D_{\mathrm{KL}}(\delta_{a^*} \,\|\, Q) = \sum_a \delta_{a^*}(a) \log \tfrac{\delta_{a^*}(a)}{Q(a)}$, where the convention $0 \log 0 = 0$ kills every $a \neq a^*$ term, leaving $\log \tfrac{1}{Q(a^*)} = -\log Q(a^*)$. Total variation collapses just as cleanly: $\operatorname{TV}(\delta_{a^*}, Q) = \tfrac12 \sum_a |\delta_{a^*}(a) - Q(a)| = 1 - Q(a^*)$. Combining gives the identity. Substituting into the Bretagnolle–Huber inequality $\operatorname{TV}(P, Q) \le \sqrt{1 - e^{-D_{\mathrm{KL}}(P \,\|\, Q)}}$ yields $1 - e^{-D_{\mathrm{KL}}} \le \sqrt{1 - e^{-D_{\mathrm{KL}}}}$, *strictly* on $D_{\mathrm{KL}} > 0$. The identity is therefore not BH-at-equality; it is the *exact value* at the deterministic-π* corner, sitting strictly below the BH envelope. Full proof in [[#^sec-key-lemma-proofs]].
 

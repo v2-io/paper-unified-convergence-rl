@@ -25,7 +25,7 @@ All three factors are multiplicatively load-bearing per element (zeroing any col
 > [!theorem] Composition: joint guarantees with conditional cumulative reduction ^thm-composition
 > Let $(\mathcal S, \mathcal A, P_t, r_t, N_h)$ be a non-stationary MDP with bounded reward, finite action space, and for each round $t$ a deterministic optimum policy $\pi^*_t = \delta_{a^*_t}$ with action gap $\Delta_{\min} > 0$. Suppose the agent operates on a singular causal trajectory in the sense of [[#^sec-preliminaries]] and updates its policy with per-element exponential forgetting at rates $\{\lambda_{ij}\}$. Let $K_t(s) := D_{\mathrm{KL}}(\delta_{a^*_t(s)} \,\|\, Q_t(\cdot \mid s))$ be the per-state reverse-KL coordinate (in the bandit case $N_h=1$ the state argument is suppressed). If
 >
-> **(A1) Metric on policy space.** $Q_t(a^*_t \mid s) > 0$ at every visited state and round.
+> **(A1) Metric extension.** The identity $\operatorname{TV}(\delta_{a^*_t(s)}, Q_t(\cdot \mid s)) = 1 - e^{-K_t(s)}$ of [[#^lem-pointmass-identity]] is read in the extended real sense: when $Q_t(a^*_t(s) \mid s) = 0$, $K_t(s) = +\infty$ and $1 - e^{-K_t(s)} = 1$ recovers the trivial bound $R(Q_t \mid s) \le V_{\max}$. No pointwise positivity is required; vanilla deterministic UCB / UCBVI / UCRL2 deployed at the optimism-argmax are in scope without modification.
 >
 > **(A2) Multi-factor forgetting prerequisite.** Within Model (Σ) of [[#^sec-key-lemma-2]], the bottleneck strategic tempo $\mathcal T_\Sigma^{\mathrm{bn,ss}} := \min_{(i,j) \in E} \nu_{ij} \cdot \iota_{ij} \cdot (1 - \lambda_{ij}) > \rho_\Sigma / R_\Sigma$.
 >

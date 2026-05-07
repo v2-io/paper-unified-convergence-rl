@@ -17,7 +17,7 @@
 \item {\bf Limitations}
     \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The conclusion section discusses theory-only scope, canonical-scope assumptions (deterministic $\pi^*$, bounded value range, isolated optimum, singular trajectory), per-state vs.\ cumulative regret scope, partial uniqueness at the metric layer, and the dependence on architectural separation between $M_t$ and goal state for coupled-goal architectures.
+    \item[] Justification: The scope-and-limitations subsection of the introduction (§1.2) and the conclusion (§6) together discuss theory-only scope, canonical-scope assumptions (deterministic $\pi^*$, bounded value range, isolated optimum, singular trajectory), per-state vs.\ cumulative regret scope (Ces\`aro tracking under $B_T = o(T)$), partial uniqueness at the metric layer (chain-rule uniqueness over reverse-KL only; joint uniqueness across all three properties left open), and the dependence on architectural separation between $M_t$ and goal state for coupled-goal architectures.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper has no limitation while the answer \answerNo{} means that the paper has limitations, but those are not discussed in the paper.
@@ -33,7 +33,7 @@
 \item {\bf Theory assumptions and proofs}
     \item[] Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof?
     \item[] Answer: \answerYes{}
-    \item[] Justification: All theorems and lemmas are numbered, stated with their assumptions in-place, and cross-referenced. Main proofs (Theorems 4.1, 4.2, 4.3, 5.1, 6.1, 7.1, F.1, C.1, Lemma 5.2) appear in the body or appendices A, C, F, G; proof sketches in the body link to the full proofs in the appendices.
+    \item[] Justification: All theorems and lemmas are numbered, stated with their assumptions in-place, and cross-referenced. Theorem 4.1 (composition: joint guarantees with conditional cumulative reduction) is stated in §4 and proved in full in Appendix A. Lemmas 5.1--5.4 (point-mass reverse-KL/TV identity; multi-factor forgetting prerequisite; closed-loop interventional access; bias bound under partial identifiability) are stated with proof sketches in §5 and proved in full in Appendix B, including the perturbative extension to $\epsilon$-stochastic and softmax-regularized optima and the impulsive-ProST sector-level reduction. Proposition C.1 (monotonicity of the conventions hierarchy), Theorem C.2 (universal failure of $\mathcal A_{\mathrm{decay}}$), and Theorem C.3 (chain-rule uniqueness of reverse-KL) are stated and proved in Appendix C.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include theoretical results.

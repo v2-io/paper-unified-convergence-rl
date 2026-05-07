@@ -36,7 +36,7 @@ If a future agent (or future-me) finds themselves reaching for "compression" / "
 
 The work is organized as a multi-step refactor. We're not editing the current `src/` in place — we're authoring a parallel restructured version in `src/re/`, swapping manifests when ready.
 
-**As of 2026-05-06, the `src/re/` restructure draft exists end-to-end** (commit `1d201f6`). Body §1–§6 (~8pp target) plus Appendices A–F build clean to `out/full-paper-re.pdf` (33pp). The current `src/` (the migration trim-survivor) coexists; both manifests build. The draft answers each of the six weigh-in questions from `OUTLINE-RESTRUCTURED.md` by trying the natural choice — Jin-style mechanism (Q1), dual-anchor headline (Q2), strict-minimalist preliminaries (Q3), one segment per top-level appendix with internal sub-sections (Q4), all four key lemmas surfaced in §5 (Q5), both observations and takeaways in §6 (Q6). Easy to revise any of these now that the prose exists. Joseph's review of the draft is the next decision point.
+**As of 2026-05-06, the `src/re/` restructure draft exists end-to-end** (commit `1d201f6`). Body §1–§6 (~8pp target) plus Appendices A–F build clean to `unified-rl-neurips-2026.pdf` (33pp; manifest at `OUT.unified-rl-neurips-2026.md`, renamed from `OUT.full-paper-re.md` once the migration trim-survivor archived to `_archive/migration-src/` in `3e1a111` retired the `-re` disambiguator). The draft answers each of the six weigh-in questions from `OUTLINE-RESTRUCTURED.md` (now archived as `_archive/OUTLINE-RESTRUCTURED-2026-05-06.md`) by trying the natural choice — Jin-style mechanism (Q1), dual-anchor headline (Q2), strict-minimalist preliminaries (Q3), one segment per top-level appendix with internal sub-sections (Q4), all four key lemmas surfaced in §5 (Q5), both observations and takeaways in §6 (Q6). Easy to revise any of these now that the prose exists. Joseph's review of the draft is the next decision point.
 
 The remaining steps:
 
@@ -50,7 +50,7 @@ The remaining steps:
 
 5. **`src/re/` authoring.** New segments against the outline. The body tells the four-component story narratively; mathematics lives in appendices where it belongs; mechanism / proof-sketch section ties the key lemmas. No page budget. Truth + Wisdom in dialogue from the start.
 
-6. **Manifest swap.** New `OUT.full-paper.md` pointing at `src/re/` segments. The current `src/` stays as historical reference for the migration milestone (and as the structurally-correct trim-survivor).
+6. **Manifest swap (done 2026-05-06).** `OUT.unified-rl-neurips-2026.md` now points at `src/re/` segments. The migration trim-survivor `src/*.md` and `OUT.full-paper.md` archived to `_archive/migration-src/` and `_archive/OUT.full-paper-migration.md` in `3e1a111`.
 
 7. **NeurIPS curation.** *After* the full version exists naturally. Different question entirely: which segments, which subsections, which ordering, projected onto 9pp from the natural-length theory.
 

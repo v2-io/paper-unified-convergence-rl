@@ -1,6 +1,6 @@
-# OUT.full-paper-re.md — Restructured full-paper assembly manifest
+# OUT.unified-rl-neurips-2026.md — Full-paper assembly manifest
 
-*The Jin-style restructure (`src/re/`) authored against `OUTLINE-RESTRUCTURED.md`. Coexists with `OUT.full-paper.md` (current `src/`, the migration trim-survivor); the two structural projections share the same `meta.md` + `refs.bib`. NeurIPS-subset curation is a separate manifest, not yet written.*
+*The Jin-style restructure (`src/re/`) authored against the now-archived `OUTLINE-RESTRUCTURED.md` (see `_archive/OUTLINE-RESTRUCTURED-2026-05-06.md`). Renamed from `OUT.full-paper-re.md` after the migration trim-survivor was archived in `3e1a111` — the `-re` disambiguator is no longer doing work, so the manifest stem now ties to title + venue. NeurIPS-subset curation is a separate manifest, not yet written.*
 
 | § | Type | Slug | Title | Stage |
 |---|------|------|-------|-------|

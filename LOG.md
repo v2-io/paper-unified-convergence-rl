@@ -6,6 +6,20 @@ For active backlog see `TODO.md`. For umbrella-level history see `~/src/neurips/
 
 ---
 
+## 2026-05-06 (rename + supersede) — Manifest stem renamed; rc1 archived
+
+`OUT.full-paper-re.md` → `OUT.unified-rl-neurips-2026.md`. The `-re` suffix had been doing distinguishing work against the migration trim-survivor's `OUT.full-paper.md`, but `3e1a111` archived that manifest to `_archive/OUT.full-paper-migration.md`, retiring the disambiguation work. The new stem ties to title + venue, lowercase-with-hyphens to match the kebab-case slug pattern of the paper-dirs (`02-unified-convergence-rl`) and to play nicely on case-insensitive filesystems and as a directory name (`.build/<stem>/`).
+
+Cascade: `git mv` for the manifest preserved history; rebuild emitted the new `.build/unified-rl-neurips-2026/` ephemeral dir, the canonical `unified-rl-neurips-2026.pdf` at paper root, and the `unified-rl-neurips-2026.extracted.bib` repo-visibility snapshot. Old-stem artifacts (`full-paper-re.pdf`, `full-paper-re.extracted.bib`) `git rm`'d; `full-paper-re.prior.pdf` was gitignored so just removed; `.build/full-paper-re/` (ephemeral, gitignored) `rm -rf`'d.
+
+`paper-rc1.pdf` archived to `_archive/paper-rc1.pdf` as superseded. The only substantive difference between rc1 and `unified-rl-neurips-2026.pdf` is the §E table redesign (no content / theorem / proof change), so any "page X of rc1" notes still resolve to the same content. The single living PDF is now `unified-rl-neurips-2026.pdf`.
+
+VISION.md updated in two places to reflect the rename: the line-39 "as of 2026-05-06" snapshot and the line-53 "manifest swap" step (now marked done with the new stem). The commit-`1d201f6` and "as of 2026-05-06" anchors stay as time-stamped statements; only the path/stem references updated.
+
+Renamed-manifest header replaced its old "Coexists with `OUT.full-paper.md`" framing with the new context: rename rationale + pointer to the archived outline. Footer of the renamed manifest still mentions the stable umbrella infrastructure (`meta.md`, the umbrella-shared bib database via `bin/refs emit`).
+
+---
+
 ## 2026-05-06 (cleanup) — TODO.md stale sections folded into LOG history
 
 Three sections of `TODO.md` had outlived their use and got pulled out so the live tracker reflects only live work:

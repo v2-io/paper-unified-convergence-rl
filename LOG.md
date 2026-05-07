@@ -6,6 +6,37 @@ For active backlog see `TODO.md`. For umbrella-level history see `~/src/neurips/
 
 ---
 
+## 2026-05-07 — VT-unification spike + integration: BoBW closes §6's "open question"
+
+Joseph requested launching a serious Opus spike on the §6 "open question whether the per-round-identity route can match the T^{2/3} continuous-variation rate, or whether the regimes are structurally distinct." Spike launched with the AGENTS §5.4 trichotomy framing pointing at the H4 archived report as direct prior context. Agent did substantial mathematical work (110 lines of substantive reasoning visible in transcript reconstruction), got stuck on the report-write step due to harness Write restrictions, returned the full report content as text via task notification once unstuck-and-killed. Report saved to `spikes/VT-unification/report.md` and archived to `_archive/spikes/VT-unification/` per AGENTS §4.2 step 7 once integration verified.
+
+**Spike outcome — STRENGTHENED at Completion State 2 (match existing claim) + Completion State 3 (map structural boundary).**
+
+The §6 "open question" framing was too pessimistic — the regimes are *not* structurally distinct. Both B_T and V_T regimes are reachable via the same per-round identity coordinate; what differs is the *aggregation strategy* (block-Cauchy–Schwarz across B_T+1 stationary intervals for B_T; adaptive-window MASTER over log T parallel base-learner instances for V_T). Wei-Luo 2021's MASTER black-box reduction wraps any base learner with Õ(√L) stationary regret into a non-stationary algorithm achieving Best-of-Both-Worlds dynamic regret `Õ(min{√((B_T+1)T), V_T^{1/3} T^{2/3}})` automatically, without prior knowledge of either variation budget. Our framework's identity-routed (A5)-compatible learner satisfies Wei-Luo's Assumption 1 at the boundary `p = 1/2` (explicitly admitted). The wrapping is mechanical: Steps 1-2-4 of the proof of (v) are stationarity-agnostic; only Step 3's aggregator changes.
+
+Five distinct angles tried for Completion State 1 (beat Mao's exponent) — all failed at the Besbes-Gur-Zeevi 2014 lower bound, which holds at the deterministic-π* corner (their construction is a Bernoulli MAB with dynamic oracle playing per-round argmax, identical to B-CS1's canonical scope). The per-round identity sharpens *constants and per-round form*, not the V_T exponent. Two genuinely-open future-work directions surfaced: V_T^{eff,Σ} (continuous-variation analog of H4's B_T^{eff,Σ}) and V_T^{(K)} (variation on the identity coordinate). Both agent-coupled, both bounded above by environment-side V_T but typically much smaller in absorbing regimes.
+
+**Primary-source verification done first-hand (2026-05-07).** All three load-bearing claims confirmed against registered PDFs in `refs/pdfs/`:
+- Wei-Luo 2021 Theorem 2 + Assumption 1 (44pp, v3 Sept 2021) — black-box reduction + base-learner conditions confirmed; Table 1 lists `MASTER + Q-UCB` for episodic tabular MDPs achieving min-of-both BoBW form, improving over Mao 2021 by parameter-free property.
+- Mao 2021 (50pp, v4 Aug 2022) — RestartQ-UCB rate `Õ((SA)^{1/3} ∆^{1/3} H T^{2/3})`; matching lower bound `Ω((SA)^{1/3} ∆^{1/3} H^{2/3} T^{2/3})`. **Correction surfaced:** the spike's earlier draft and the existing §4.3 *Comparator regime* paragraph both stated Mao's prefactor as `SA · V_T^{1/3} · H` — actual is `(SA)^{1/3} · H` (cube-root SA, not linear). Fixed in the §4.3 update.
+- Besbes-Gur-Zeevi 2014 Theorem 1 (30pp, OR journal version 2019; bib registered as `besbes-gur-zeevi-2014-stochastic`) — lower bound `Ω(K^{1/3} V_T^{1/3} T^{2/3})` at deterministic-per-round optimum (Bernoulli MAB with dynamic oracle). The lower bound applies at the deterministic-π* corner exactly as the spike claimed.
+
+**Integration landed in source (this commit):**
+
+- **Tier 1: §6 conclusion paragraph replacement** at `src/re/06-conclusion.md`. Replaced "open question whether regimes are structurally distinct" with the BoBW commitment paragraph: Wei-Luo MASTER wrapping + Mao rate match + BGZ lower bound at deterministic-π* + parameter-free property + V_T^{eff,Σ} / V_T^{(K)} future work. ~6-line paragraph; net ~+3 lines vs. previous "open" paragraph.
+- **Tier 2a: §4.3 *Comparator regime* sentence update** at `src/re/04-main-result.md:61`. Replaced "Generalizing the per-round-identity route to the continuous-variation regime is open" with pointer to §6 commitment + §A (A5')-BoBW Remark. Also corrected the displayed Mao rate's SA exponent (`Õ(SA · V_T^{1/3} · H · T^{2/3})` → `Õ((SA)^{1/3} · V_T^{1/3} · H · T^{2/3})`), self-consistent with the SA-scaling comparison list a few lines later.
+- **Tier 2b: §A (A5')-BoBW Remark** at end of `src/re/A-proof-of-composition.md`. New formal Remark establishing theorem-grade availability of the BoBW form via (A5'). Includes explicit citation chain (Wei-Luo Theorem 2 + Assumption 1; Mao 2021 rate match; BGZ 2014 lower bound at deterministic-π*) and full rate statement with both rate-term and bias-term carrying through.
+
+**Bib housekeeping:** `besbes-gur-zeevi-2014-stochastic` registered via `bin/refs add` from BibTeX (NeurIPS 2014 / Stochastic Systems 2019 dual attribution). Wei-Luo and Mao bib entries already existed.
+
+**Build verification:** clean. Main text remains 13pp (Tier 1 §6 commitment fits in existing main-text page); appendices grew by ~1 page from the §A Remark (§B p20, §C p23, §D p27, §E p28, §F p29). Total ~29pp. No new overfulls.
+
+**Pattern observation (per AGENTS §3.1).** This is the third spike-validation of the strengthen-before-soften principle in this sprint: H4 was negative-with-payoff (failure mapped structural boundary + surfaced B_T^{eff,Σ} future work); H2 went sharper than the parent-anticipated clip (structural-fix gave V_max-only bound with no log factor); now VT-unification went from "open question" to "BoBW theorem-grade-available" by recognizing the aggregation/identity separability. Each spike that came in *as a softening recommendation* or *open question* ended up as a strengthening. The §3.1 escalation-path framing — depth of attention separable from raw capability; routing to spike mode when triage cadence wants to soften — has been empirically validated three times running on this paper.
+
+**Pattern observation (per AGENTS §3.5).** The spike's draft included one prefactor overstatement (Mao's `SA · V^{1/3} · H` instead of `(SA)^{1/3} · H`) that didn't catch on its own re-read. The primary-source verification step caught it before it landed in §6. Worth surfacing as a memory-worthy data point: even a 9-minute focused-attention spike can carry citation-level overstatements, because the spike's core math doesn't depend on the exact prefactor. Always primary-source-verify rate constants and SA-exponents before committing them to source.
+
+---
+
 ## 2026-05-07 — Integration pass: H1 + M2 + H2 + H3 + H5 + H4 + Tier-2 quick wins landed in source
 
 Coordinated integration pass applying the five-spike sweep outcomes plus Tier-2 quick wins to `src/re/`. Five batches, one commit each, build clean after each. Spike directories archived to `_archive/spikes/` per AGENTS §4.2 step 7.

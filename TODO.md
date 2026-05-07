@@ -4,6 +4,26 @@
 
 ---
 
+## Read-through notes — 2026-05-06 (rc1 = `OUT.full-paper-re.md`)
+
+Read through `out/full-paper-re.pdf` carefully. Genuinely strong — the four-component composition reads as one argument now, not four parallel pieces. A few reactions and a few suggestions:
+
+**What's working well:**
+
+1. *Related-work organization.* Six named lineages (variation-budget dynamic regret, two-term decompositions, tempo and forgetting, causal/interventional access, info-theoretic regret cross-cutting, satisficing/feasibility adjacent, contemporaneous post-March-2026), each with explicit "Same shape, different axis" or "We compose with non-stationarity" discrimination. This reads as a contribution-distinguishing prior-art map rather than a literature dump. Reviewers love this shape.
+2. *Honest scope statements.* "Theory only / No experiments. The point-mass identity is mathematically airtight..." and "Canonical scope" + "Comparator regime" make the paper's limits visible immediately rather than requiring §6 archaeology to find. AUTHORING §3.3 voice discipline at work.
+3. *Title.* Colon-free, descriptive, fits §6.1 alternative form: "A Unified Convergence Theory for Non-Stationary Reinforcement Learning." Easy to remember; the four-component composition is the hook in §1, not the title.
+4. *Point-mass identity placement.* The exact algebraic form `TV(δ_{a^*}, Q) = 1 - e^{-D_KL}` lands as a closed-form identity rather than an inequality, and the strict-tighter-than-Pinsker-and-BH framing in §1.2 is doing genuine novelty-positioning work. Worth keeping that as a load-bearing thread through §4 and §C.
+
+**Suggestions:**
+
+1. *Abstract length.* The current abstract runs ~400 words across 28 lines — longest of the three papers. The (i)-(iv) bullet-prose enumeration in lines 5-13 reads like a TOC inside the abstract; a reviewer skimming the abstract gets a punch list, not a result. AUTHORING §6.3 targets ~150–250 words. Concrete trim path: keep the gap-and-compose framing through line 13, fold the rate (line 14) and identity-vs-Pinsker tightness into one sentence, drop the "structural failure class" + "perturbative extension" + "ProST reduction" closing details (each is its own paragraph in §1.2 contributions list). Roughly: gap → composition → rate + sharp coordinate → orthogonal-axis distinction from frequency lineage. Same content, ~half the length.
+2. *Wide-table overflow at §F (extended related work).* The 7-row strand-comparison table at `src/08-related-work.md:5` is currently a bare markdown table emitting `\begin{tabular}{lll}` with natural-width columns — and the middle column has multi-cite bibkey lists that don't break across lines. lualatex's compile log shows a 1319.59 pt overfull-hbox warning on this table, meaning a column runs ~18 inches past `\textwidth` (content silently clips off the right page edge in the rendered PDF). AUTHORING §1.4 covers wide tables: wrap in a `[!table] cols="l X X" ^tab-related-work-strands` callout and the `X` columns text-wrap within `\textwidth`. The same treatment helps the §3 two-gap diagnostic (167pt over) and §5 strategic-tempo mechanism table (267pt over). All three are flagged with concrete recipes earlier in this Inbox.
+3. *Closing-sentence tone in abstract.* "Theory-only; Lemma 5.2 makes the ProST reduction rigorous at the sector-parameter level, while their published experiments motivate the strategic-tempo component" reads slightly defensive — "theory-only" + "motivate via others' experiments" is two scope-acknowledgments in one sentence. Consider closing on the result rather than the limit; the scope already lives in §1's "Theory only" callout, no need to double it in abstract.
+4. *Forward `(2)` ref in abstract or main text.* Numbered eqref forms render fine via `[[#^eq-...]]` (AUTHORING §1.7 / §2.2). Spot-check that any "as in (2)" prose in §3+ uses anchored cross-refs not literal numbers — the anchored form survives reorganization, the literal form drifts silently.
+
+---
+
 ## Inbox — flagged 2026-05-06 by build-pipeline agent
 
 **Page-budget reality check.** `bin/build 02-unified-convergence-rl neurips-2026-paper` currently produces a 22-page PDF; main text (§1–§9) ends at page 12, References starts at page 13. That's **3 pages over** the 9-page main-text limit — the existing manifest already comments out appendices B/C/D/E but the body is still long. The migration agent's earlier note ("9pp draft cut … A and F kept as load-bearing; G kept for main proofs") was about appendix selection; main-text trim hasn't happened yet. Suggested next: either (i) deeper segment-level compression (the OUTLINE risk register identified candidates: §6.1 fold to footnote, §6.5 collapse to paragraph, §5.7/§5.8 unify, §5.6 Theorem 5.5 to Appendix C), or (ii) commit to a heavier appendix shift. Please verify the actual numbers via `pdfinfo out/neurips-2026-paper.pdf` and update the OUTLINE before deciding.

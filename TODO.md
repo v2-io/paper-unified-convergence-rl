@@ -158,3 +158,19 @@ The bib database has all entries needed (per dry-run; only one missing — see b
 - **Empirical-validation absence risk: medium.** NeurIPS reviewers expect empirical validation. Mitigations: (a) BH identity is mathematically airtight; (b) worked-example reduction to Lee et al. ProST gives empirical grounding via their experiments; (c) honest "theory paper" framing in §9 limitations.
 - **Citation-hallucination risk: low-medium.** Lee et al. ProST 2023/2024, Long-Fei Li-Zhao-Zhou 2024 are recent — verify carefully; Bareinboim, Russo-Van Roy, Bretagnolle-Huber 1978 well-cited and stable.
 - **Scope-creep risk: medium.** The composition theorem invites extending beyond four components to strategic-DAG details, edge-update gain derivations. Hold the line at four named components; defer everything else to appendices or follow-up.
+
+---
+
+## Build-pipeline notice — 2026-05-06 (build-pipeline owner)
+
+The umbrella build interface refactored at commit `d24c9e8` (`SPEC-build-refactor.md` for the design discussion). Practical changes you'll see in the working tree on first build:
+
+- **New ephemeral build dir.** `<paper>/.build/<stem>/` replaces `<paper>/out/`. Holds the rendered `.tex`, the auto-emitted `<stem>.references.bib`, lualatex intermediates, and the canonical `<stem>.pdf`. Worth `.gitignore`-ing (`.build/`) when convenient.
+- **PDF snapshot-and-swap.** On each build, `<stem>.pdf` moves to `<stem>.prior.pdf` first, then the fresh PDF lands as `<stem>.pdf`. A failed build leaves the prior PDF as the last-known-good. `*.prior.pdf` is also worth `.gitignore`-ing.
+- **New tracked artifact.** `<stem>.extracted.bib` is a repo-visibility snapshot of the bib that bibtex actually used. Naming is explicit-on-purpose so it's obvious-by-construction that it's a build artifact (canonical edits go through `bin/refs add` / `refs/entries/<key>.yml`). Recommended to track for diff visibility.
+- **`<paper>/refs.bib` is now an orphan.** The build no longer reads or writes it — `bin/refs emit` runs automatically before each compile and writes to `.build/<stem>/<stem>.references.bib`. Existing `<paper>/refs.bib` files just sit there until you remove them. Note: agents shouldn't have been hand-editing `refs.bib` directly anyway; if there are local edits in there worth preserving, they belong as YAML at `refs/entries/<key>.yml` (run `bin/refs add` to land them properly).
+- **`<paper>/out/` is also an orphan.** Same story — build no longer touches it; remove at your leisure.
+
+CLI gained cwd-aware behavior — from inside your paper-dir, `bin/build` (no args) now builds all your manifests. `bin/build <stem>` from cwd builds one. The umbrella forms (`bin/build <paper-dir> [<stem>]`, `bin/build --all`) still work.
+
+No action required from you; the next time you run a build, the new artifacts appear and you can clean up `out/` + `refs.bib` at any point.

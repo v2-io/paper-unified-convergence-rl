@@ -11,7 +11,7 @@ These four tracks share an evident common ancestor — the dynamic-regret analys
 > *Can we design a unified convergence theory for non-stationary reinforcement learning that handles non-stationarity, has explicit metric structure on policy space, and is learnable from on-policy data?*
 
 We present here a composition that delivers all three properties jointly. Composing four structural elements — a two-gap diagnostic, a point-mass reverse-KL/TV identity, a multi-factor strategic tempo with forgetting prerequisite, and closed-loop interventional access — yields a cumulative dynamic regret theorem with rate
-$$\mathrm{DynReg}(T) \;\le\; \tilde O\bigl(N_h \sqrt{(B_T+1) \, T}\bigr)$$
+$$\mathrm{DynReg}(T) \;\le\; \tilde O\bigl(V_{\max}\, N_h \sqrt{(B_T+1) \, T}\bigr)$$
 in the piecewise-stationary regime, where $B_T$ counts piecewise-stationary segment boundaries (kernel-and-reward changes) along the realized trajectory and $N_h$ is the planning horizon. The per-round coordinate of this rate is sharper than both Pinsker and Bretagnolle–Huber at the deterministic-π* corner. The technical anchor is an exact algebraic identity:
 $$\boxed{\;\operatorname{TV}(\delta_{a^*}, Q) \;=\; 1 - e^{-D_{\mathrm{KL}}(\delta_{a^*} \,\|\, Q)},\;}$$
 which holds for any policy $Q$ with $Q(a^*) > 0$ and lies *strictly below* both the Pinsker envelope $\sqrt{D_{\mathrm{KL}}/2}$ and the Bretagnolle–Huber envelope $\sqrt{1 - e^{-D_{\mathrm{KL}}}}$ at this corner.

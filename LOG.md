@@ -6,6 +6,35 @@ For active backlog see `TODO.md`. For umbrella-level history see `~/src/neurips/
 
 ---
 
+## 2026-05-07 — De-novo audits (Gemini + Codex) integrated into TODO
+
+Two de-novo audit reports landed: Gemini at `audits/de_novo_audit_2026_05_06.md` (terse, page-budget-leaning) and Codex at `audits/de-novo-audit-2026-05-07.md` (detailed, technical, six H-findings + three M-findings + trim recommendations + suggested triage). Joseph's instruction: do not take findings at face value; verify; with Codex specifically, attempt strengthening before any softening; add to TODO what *I* judge most valuable. Following AGENTS §3.5 (audit-grade tasks stay first-hand, no sub-agent farming) and §3.1 (strengthen-before-soften).
+
+**Primary-source verification pass.** Read all cited segments first-hand: `src/re/01-introduction.md`, `03-preliminaries.md`, `04-main-result.md`, `05-mechanism.md`, `06-conclusion.md`, `B-key-lemma-proofs.md`, `D-algorithm.md`, `A-proof-of-composition.md`. Confirmed Codex's source extracts are accurate at the line numbers cited; the structural claims in each finding hold against the actual prose.
+
+**Five real technical findings (H1–H5) — strengthening-spike candidates landed in TODO.**
+
+- *H1 (Lyapunov scaling):* the proof's drift inequality `E[ΔV] ≤ -2𝒯_Σ V + ρ_Σ²` honestly gives `R* ~ ρ/√𝒯` (mean-square ultimate-bounded radius), not the stated `R* = ρ/𝒯`. The disturbance bound in `Model (S)` is *deterministic* (`|w_ij| ≤ ρ_Σ/|E|^{1/2}`), so the cross-term `2δ^⊤ w` was dropped (presumably treating `w` like zero-mean noise) when retaining it would give an honest analysis. The strengthening direction is to keep the cross-term with Cauchy–Schwarz; the resulting radius depends on regime — `ρ/𝒯` for slow correction, `ρ/√𝒯` for fast — and the threshold form may need a max-of-two-regimes restatement. Real, real spike.
+- *H2 (bias term value-scale conversion):* the `N_h(1-p_id)log(1/q₀)·T` term added to dynamic regret is in *KL coordinates* added to a *value-scale* sum. The conversion needs the `1-e^{-D}` map (1-Lipschitz) plus `V_max`. The strengthening: the corrected term `N_h V_max(1-p_id) min(1, log(1/q₀)) T` *clips* to `V_max` (TV ≤ 1 always), which is a genuine *tighter* bound for `q₀ < 1/e`. So Codex's "this could exceed the trivial value range" softening recommendation, properly handled, becomes a strengthening — exactly the §3.1 pattern Joseph repeatedly observes.
+- *H3 (V_max double-count):* `V_max(M_t)` defined in §3 as cumulative horizon-Q range; sim-lemma uses `V_max·N_h·TV`, multiplying by `N_h` again. Two equivalent fixes; pick (a) per-step convention so `V_max` denotes one thing throughout. Clean, no rate change, just notational hygiene.
+- *H4 (B_T = optimum-change vs. stationary-segment):* §3 defines `B_T` as optimum-change count; (A5) and the proof's block decomposition assume *kernel*-stationarity within blocks. Real concern. Strengthening: argue under (A2) that non-optimum-changing kernel drift is absorbed by the strategic mismatch dynamics, making optimum-change count the right counting measure. Failing that, fall back to redefining `B_T` as kernel-change count (cleaner-but-different headline).
+- *H5 (A1 satisfaction by deterministic UCB):* A1 requires `Q_t(a*)>0` pointwise; deterministic UCB sometimes deploys at `a' ≠ a*` with `Q_t(a*) = 0`. The expectation identity `E[1-e^{-K_t}] = E[1-Q_t(a*)]` extends through the K_t = ∞ limit and is finite, so the rate goes through in expectation, but the strict pointwise reading of A1 fails. Strengthening: define `Q_t` for deterministic UCRL2/UCBVI as the internal sampling/planning distribution rather than the deployed action; show smoothed deployment cost is controllable.
+
+**Two smaller real fixes (M1, M3) — landed in TODO without spike.** "Interventional by construction" → "interventional under (C1)–(C3)" in headline locations (M1); add `(Q ≥ q₀)` qualifier to §4 perturbative-extension statement (M3).
+
+**Two findings overlap with already-held strategy items.** Codex H6 (headline rate's bias-vanishes condition) is the same content as the held identity-vs-rate-as-headline question. Codex M2 (bundle-vs-monolithic abstract framing) is the same content as paper-1 / paper-3 / pipeline-agent's converging abstract-shape suggestion. Cross-referenced in TODO, not double-tracked.
+
+**Strengthening direction worth flagging (O1).** Gemini's "elevate the universal-failure-class theorem to main text" is genuinely interesting — the gain-decay `𝒜_decay` structural theorem currently lives in App. C.6 and is one of the most reviewer-resonant claims in the paper. Paper-1 author's earlier review independently flagged it as a strength. Elevation to a numbered §4 theorem alongside Component 3, with proof staying in C.6, is a real strengthening of the §1 contribution headline. Filed as O1 in TODO.
+
+**Dismissals — both Gemini and Codex on page-budget, plus two structural collapse recommendations.** Captured in TODO with reasoning; key calls:
+- Gemini "merge §4–§5" — collapses the Jin-style restructure where §4 is formal main result and §5 is mechanism narrative with key lemmas surfaced. The split is doing genuine narrative work; merging undoes the restructure's whole point.
+- Gemini "relocate §4.4 ablation to appendix" — page-budget thinking; §4.4 necessity argument is doing reviewer-anticipation work.
+- Codex "trim NeurIPS Theory Track quote" / "trim BH/Pinsker repetition" — page-budget thinking. The repetition is doing emphasis-of-novelty work for a result whose entire technical contribution is its BH-corner relationship; a one-shot tightening pass might be worth it post-strategy-talk, but not via the kind of mechanical compression cycle Joseph has redirected away from.
+
+**Audit reports archived** to `_archive/audits/` once integration into TODO verified (this entry is the verification — AGENTS §3.4 dictates LOG-confirms-integration before any move to `_archive/`).
+
+---
+
 ## 2026-05-06 (rename + supersede) — Manifest stem renamed; rc1 archived
 
 `OUT.full-paper-re.md` → `OUT.unified-rl-neurips-2026.md`. The `-re` suffix had been doing distinguishing work against the migration trim-survivor's `OUT.full-paper.md`, but `3e1a111` archived that manifest to `_archive/OUT.full-paper-migration.md`, retiring the disambiguation work. The new stem ties to title + venue, lowercase-with-hyphens to match the kebab-case slug pattern of the paper-dirs (`02-unified-convergence-rl`) and to play nicely on case-insensitive filesystems and as a directory name (`.build/<stem>/`).

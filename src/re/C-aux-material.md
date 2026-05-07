@@ -124,7 +124,7 @@ Action-perception-loop frameworks — active inference \cite{friston-2017-active
 - *Regime-indexed identifiability (A/B/C).* Active inference literature treats causal identifiability uniformly within modeling assumptions; we surface the regime split at framework level.
 - *Scope honesty.* We distinguish "data generated under intervention" from "cleanly identified $\mathrm{do}$-estimates"; \cite{bruineberg-dolega-dewhurst-baltieri-2022-bbs} documents that the active-inference literature sometimes elides this.
 
-The causal-RL line \cite{zhang-2016-mdps, zhang-2022-online-rl, lu-2021-causal, lu-2022-efficient, wang-2021-provably, zhang-2020-designing} is the direct ancestor for regime-indexed identifiability and on-policy interventional access; all are stationary-MDP. Composition with non-stationarity is, to our knowledge, novel.
+The causal-RL line \cite{zhang-2016-mdps, zhang-2022-online-rl, lu-2022-efficient, wang-2021-provably, zhang-2020-designing} is the direct ancestor for regime-indexed identifiability and on-policy interventional access; all are stationary-MDP. Composition with non-stationarity is, to our knowledge, novel.
 
 ### Chain-rule uniqueness of reverse-KL ^sec-aux-chain-rule
 

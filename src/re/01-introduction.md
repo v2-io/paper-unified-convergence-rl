@@ -40,4 +40,4 @@ $$\mathbb E[\mathrm{DynReg}(T)] \;\le\; \tilde O\!\left(V_{\max} N_h \cdot \min\
 
 **Canonical scope.** The composition theorem holds under deterministic optimum policy, bounded value range, isolated optimum (so $\Delta_{\min} > 0$), and a singular causal trajectory in the sense made precise in [[#^sec-preliminaries]]. The deterministic-$\pi^*$ scope extends *perturbatively* to $\epsilon$-stochastic and softmax-regularized optima ([[#^sec-key-lemma-1]]); tied-optimum is a degraded one-sided form ([[#^sec-aux-tied-softmax]]). Each axis of the canonical scope degrades cleanly outside it (we discuss the failure modes in [[#^sec-conclusion]]).
 
-**Comparator regime.** The cumulative rate is in the piecewise-stationary $B_T$ family, not the continuous-variation $V_T$ family of \cite{mao-2021-nearoptimal}. Generalizing the per-round-identity route to continuous variation is open ([[#^sec-conclusion]]).
+**Comparator regime.** The cumulative rate covers both the piecewise-stationary $B_T$ family and the continuous-variation $V_T$ family of \cite{mao-2021-nearoptimal} via Best-of-Both-Worlds wrapping ([[#^sec-conclusion]]).

@@ -2,7 +2,7 @@
 
 This appendix gives the full proof of [[#^thm-composition]]. The proof composes the four key lemmas of [[#^sec-mechanism]] (full proofs of those in [[#^sec-key-lemma-proofs]]) with a block decomposition at optimum-change events plus Cauchy–Schwarz across blocks.
 
-**Notation.** Throughout this section: $K_t(s) := D_{\mathrm{KL}}(\delta_{a^*_t(s)} \,\|\, Q_t(\cdot \mid s))$ is the per-state reverse-KL coordinate; $d^{Q_t}_h(\cdot \mid s_0)$ is the round-$t$ learner-induced state distribution at horizon step $h$ starting from $s_0$; $\overline{\mathrm{TV}}_t := \tfrac{1}{N_h} \sum_{h=0}^{N_h-1} \mathbb E_{s_h \sim d^{Q_t}_h}[\operatorname{TV}(\pi^*_t(\cdot \mid s_h), Q_t(\cdot \mid s_h))]$ is the occupancy-weighted per-round coordinate of (A5); $B_T = |\{t : a^*_t \ne a^*_{t-1}\}|$ counts optimum-change events; the partition is $0 = \tau_0 < \tau_1 < \cdots < \tau_{B_T} \le \tau_{B_T+1} = T$ with block $i$ length $\Delta_i := \tau_{i+1} - \tau_i$.
+**Notation.** Throughout this section: $K_t(s) := D_{\mathrm{KL}}(\delta_{a^*_t(s)} \,\|\, Q_t(\cdot \mid s))$ is the per-state reverse-KL coordinate; $d^{Q_t}_h(\cdot \mid s_0)$ is the round-$t$ learner-induced state distribution at horizon step $h$ starting from $s_0$; $\overline{\mathrm{TV}}_t := \tfrac{1}{N_h} \sum_{h=0}^{N_h-1} \mathbb E_{s_h \sim d^{Q_t}_h}[\operatorname{TV}(\pi^*_t(\cdot \mid s_h), Q_t(\cdot \mid s_h))]$ is the occupancy-weighted per-round coordinate of (A5); $B_T = |\{t : (P_t, r_t) \ne (P_{t-1}, r_{t-1})\}|$ counts piecewise-stationary segment boundaries (per [[#^sec-preliminaries]]); the partition is $0 = \tau_0 < \tau_1 < \cdots < \tau_{B_T} \le \tau_{B_T+1} = T$ with block $i$ length $\Delta_i := \tau_{i+1} - \tau_i$.
 
 ### Proof of (i) — Per-round identity-bounded regret
 

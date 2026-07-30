@@ -1,76 +1,19 @@
-## References {-}
+## References
 
-*Alphabetical. To be uniformized for camera-ready. Phase B will switch to natbib + `refs.bib` per AUTHORING §1.11; until then, manual list.*
+<!--
+References auto-generated from `\cite{}` / `\citet{}` keys in segment source
+against `refs/entries/*.yml` (umbrella bib database). The build's manifest row
+with `Type=Bibliography` injects `\bibliography{<stem>.references}` here — see
+`bin/build` (the bibliography branch short-circuits before `render_segment`),
+so this segment's content is NOT rendered. Leave the heading + this comment as
+a stub for human readers of the source tree. Same convention as paper 01's
+`src/references.md`.
 
-- Abbasi-Yadkori, Y., György, A., Lazic, N. (2022). A new look at dynamic regret for non-stationary stochastic bandits. *J.\ Mach.\ Learn.\ Res.*
-- Aczél, J., Daróczy, Z. (1975). *On Measures of Information and Their Characterizations*. Academic Press.
-- Agarwal, A., Kakade, S., Lee, J., Mahajan, G. (2021). On the theory of policy gradient methods. *J.\ Mach.\ Learn.\ Res.*
-- Amari, S., Nagaoka, H. (2000). *Methods of Information Geometry*. AMS.
-- Anderson, B. D. O. (1985). Adaptive systems, lack of persistence of excitation, and bursting phenomena. *Automatica* 21(3):247–258.
-- Anderson, B. D. O., Moore, J. B. (1979). *Optimal Filtering*. Prentice-Hall.
-- Auer, P., Jaksch, T., Ortner, R. (2010). Near-optimal regret bounds for reinforcement learning (UCRL2). *J.\ Mach.\ Learn.\ Res.* 11:1563–1600.
-- Azar, M. G., Osband, I., Munos, R. (2017). Minimax regret bounds for reinforcement learning (UCBVI). *ICML*. arXiv:1703.05449.
-- Bareinboim, E., Correa, J., Ibeling, D., Icard, T. (2022). On Pearl's hierarchy and the foundations of causal inference. In *Probabilistic and Causal Inference: The Works of Judea Pearl*, ACM.
-- Besbes, O., Gur, Y., Zeevi, A. (2013). Non-stationary stochastic optimization. *Operations Research*.
-- Bhatia, K., Sridharan, K. (2020). Online learning with dynamics: a minimax perspective. *NeurIPS*. arXiv:2012.01705.
-- Bretagnolle, J., Huber, C. (1978). Estimation des densités: risque minimax. *Séminaire de Probabilités XII*, Springer LNM 649.
-- Bruineberg, J., Dolega, K., Dewhurst, J., Baltieri, M. (2022). The Emperor's new Markov blankets. *Behavioral and Brain Sciences*.
-- Canonne, C. (2022). A short note on an inequality between KL and TV. *arXiv:2202.07198*.
-- Cheung, W. C., Simchi-Levi, D., Zhu, R. (2022). Hedging the drift: learning to optimize under non-stationarity. *Management Science* 68(3):1696–1713; SSRN 2018, arXiv:1903.01461 (2019).
-- Cheung, W. C., Simchi-Levi, D., Zhu, R. (2020). Reinforcement learning for non-stationary Markov decision processes: the blessing of (more) optimism. *arXiv:2006.14389*.
-- Conant, R., Ashby, W. R. (1970). Every good regulator of a system must be a model of that system. *Int.\ J.\ Systems Sci.*
-- Cover, T., Thomas, J. (2006). *Elements of Information Theory*. Wiley.
-- Csiszár, I. (1991). Why least squares and maximum entropy? An axiomatic approach to inference for linear inverse problems. *Annals of Statistics* 19(4):2032–2066.
-- Dick, T., György, A., Szepesvári, C. (2014). Online learning in MDPs with changing cost sequences. *ICML*.
-- Fei, Y., Yang, Z., Wang, Z., Xie, Q. (2020). Dynamic regret of policy optimization in non-stationary environments. *arXiv:2007.00148*.
-- Foster, D., Rakhlin, A., Sekhari, A., Sridharan, K. (2022). On the complexity of adversarial decision making. *arXiv:2206.13063*.
-- Friston, K., FitzGerald, T., Rigoli, F., Schwartenbeck, P., Pezzulo, G. (2017). Active inference: a process theory. *Neural Computation* 29.
-- Gajane, P., Ortner, R., Auer, P. (2019). Variational regret bounds for reinforcement learning. *UAI*.
-- Garivier, A., Moulines, E. (2008). On upper-confidence bound policies for non-stationary bandit problems. *arXiv:0805.3415*.
-- Gerogiannis, A., Huang, Y.-H., Veeravalli, V. (2026). DARLING: Detection augmented reinforcement learning with non-stationary guarantees. *(contemporaneous; April 2026)*.
-- Hajiabolhassan, H., Ortner, R. (2025). Online regret bounds for satisficing in Markov decision processes. *Mathematics of Operations Research*.
-- Hespanha, J. P., Liberzon, D., Teel, A. R. (2008). Lyapunov conditions for input-to-state stability of impulsive systems. *Automatica* 44(11):2735–2744.
-- Hobson, A. (1969). A new theorem of information theory. *J.\ Stat.\ Phys.* 1(3):383–391.
-- Sprungk, B. (2019). On the local Lipschitz stability of Bayesian inverse problems. *Inverse Problems* 36(5). arXiv:1906.07120.
-- Junzhe Zhang. (2020). Designing optimal dynamic treatment regimes: a causal RL approach. *ICML*.
-- Junzhe Zhang, Bareinboim, E. (2016). MDPs with unobserved confounders: a causal approach. (Tech.\ report; Columbia.)
-- Junzhe Zhang, Bareinboim, E. (2022). Online RL for mixed policy scopes. *NeurIPS*.
-- Kakade, S., Krishnamurthy, A., Lowrey, K., Ohnishi, M., Sun, W. (2020). Information-theoretic regret bounds for online nonlinear control. *NeurIPS*. arXiv:2006.12466.
-- Kakade, S., Langford, J. (2002). Approximately optimal approximate reinforcement learning (CPI / performance-difference lemma). *ICML*.
-- Khalil, H. (2002). *Nonlinear Systems* (3rd ed.). Prentice Hall.
-- Khasminskii, R. (2012). *Stochastic Stability of Differential Equations*. Springer.
-- Kreisselmeier, G. (1986). Stable adaptive regulation of arbitrary nth-order plants. *IEEE Trans. Automatic Control* AC-31:299–305.
-- Lattimore, T., György, A. (2021). Mirror descent and the information ratio. *COLT* (PMLR vol 134); arXiv:2009.12228 (2020).
-- Lattimore, T., Szepesvári, C. (2020). *Bandit Algorithms*. Cambridge.
-- Lee, H., Ding, Y., Lee, J., Jin, M., Lavaei, J., Sojoudi, S. (2023). Tempo adaptation in non-stationary RL (ProST). *NeurIPS 36*.
-- Lee, H., Jin, M., Lavaei, J., Sojoudi, S. (2024). Pausing policy learning in non-stationary RL. *ICML*.
-- Levine, S. (2018). Reinforcement learning and control as probabilistic inference. *arXiv:1805.00909*.
-- Liese, F., Vajda, I. (1987). *Convex Statistical Distances*. Teubner.
-- Long-Fei Li, Zhao, P., Zhou, Z.-H. (2024). Dynamic regret of adversarial MDPs with unknown transition and linear function approximation. *AAAI*.
-- Lu, X., Van Roy, B. (2019). Information-theoretic confidence bounds for reinforcement learning. *NeurIPS*.
-- Lu, Y., Meisami, A., Tewari, A. (2021). Causal MDPs: learning good interventions efficiently. *arXiv:2102.07663*.
-- Lu, Y., Meisami, A., Tewari, A. (2022). Efficient RL with prior causal knowledge. *CLEaR*.
-- Mao, W., Zhang, K., Zhu, R., Simchi-Levi, D., Başar, T. (2021). Near-optimal model-free RL in non-stationary episodic MDPs. *ICML*.
-- Min, S., Russo, D. (2023). Information-theoretic analysis of nonstationary bandit learning. *ICML*.
-- Munos, R. (2003). Error bounds for approximate policy iteration. *ICML*.
-- Parr, T., Pezzulo, G., Friston, K. J. (2022). *Active Inference: The Free Energy Principle in Mind, Brain, and Behavior*. MIT Press.
-- Pearl, J. (2009). *Causality: Models, Reasoning, and Inference* (2nd ed.). Cambridge.
-- Ross, S., Bagnell, J. A. (2010). Efficient reductions for imitation learning (DAgger). *AISTATS*.
-- Russac, Y., Vernade, C., Cappé, O. (2019). Weighted linear bandits for non-stationary environments. *NeurIPS*.
-- Russo, D., Van Roy, B. (2014a). An information-theoretic analysis of Thompson sampling. *J.\ Mach.\ Learn.\ Res.*
-- Russo, D., Van Roy, B. (2014b). Learning to optimize via information-directed sampling. *Operations Research*.
-- Sanov, I. N. (1957). On the probability of large deviations of random variables. *Mat.\ Sb.* 42(84):11–44.
-- Sason, I., Verdú, S. (2016). $f$-divergence inequalities. *IEEE Trans.\ Info.\ Theory*.
-- Schulman, J., Levine, S., Moritz, P., Jordan, M. I., Abbeel, P. (2015). Trust region policy optimization (TRPO). *ICML*. arXiv:1502.05477.
-- Schulte, O., Poupart, P. (2025). When should reinforcement learning use causal reasoning? *Trans.\ Mach.\ Learn.\ Res.*
-- Shore, J., Johnson, R. (1980). Axiomatic derivation of the principle of maximum entropy and the principle of minimum cross-entropy. *IEEE Trans.\ Info.\ Theory* 26(1).
-- Stradi, F. E., Lunghi, A., Castiglioni, M., Marchesi, A., Gatti, N. (2024). Learning CMDPs with non-stationary rewards and constraints. *arXiv:2405.14372*.
-- Stuart, A. (2010). Inverse problems: a Bayesian perspective. *Acta Numerica*.
-- Touati, A., Vincent, P. (2020). Efficient learning in non-stationary linear MDPs (OPT-WLSVI). *arXiv:2010.12870*.
-- Tsybakov, A. (2009). *Introduction to Nonparametric Estimation*. Springer.
-- Wang, L., Yang, Z., Wang, Z. (2021). Provably efficient causal RL with confounded observational data (DOVI). *NeurIPS*; arXiv:2006.12311 (2020).
-- Wei, C.-Y., Luo, H. (2021). Non-stationary RL without prior knowledge: an optimal black-box approach. *arXiv:2102.05406*.
-- Wiener, N. (1948). *Cybernetics*. MIT Press.
-- Y. Zhang, Zhu, R., Xie, Q. (2026). On the peril of (even a little) non-stationarity in satisficing regret minimization. *(contemporaneous; March 2026)*.
-- Yang, Y., Zheng, Z., Tomizuka, M., Liu, C., Li, S. (2024). The Feasibility Theory of Constrained Reinforcement Learning: A Tutorial Study. arXiv:2404.10064.
-- Zhao, P., Wang, Y.-X., Zhou, Z.-H. (2021). Non-stationary online learning with memory and non-stochastic control. *AISTATS*.
+The 76-line hand-maintained alphabetical list that used to live at this path
+was archived 2026-07-29 to `_archive/references-manual-list-2026-05-07.md`. It
+was already dead by submission — the switch to natbib happened, but the file
+and its "until then, manual list" note were never removed, so it read as live.
+Kept rather than deleted because several entries carry journal / publisher /
+edition detail that looks better than the corresponding `refs/entries/` YAML,
+which is the field-hygiene question raised in umbrella `PIPELINE-TODO.md` §F7.
+-->

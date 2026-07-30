@@ -6,6 +6,22 @@ For active backlog see `TODO.md`. For umbrella-level history see `~/src/neurips/
 
 ---
 
+## 2026-07-29 — Post-review sync: dead reference list archived, as-submitted state pinned
+
+Reviews returned 2026-07-23 (submission 33915: ratings 3 / 3 / 2, the last at confidence 5). The AC's meta-review states the clarity and precision problems require "significant rewriting outside the scope of the author response period" — i.e. a reject announced in advance. No paper content touched here; revisions are forbidden during the response period anyway.
+
+**A 76-line manual reference list had been dead since before submission.** `src/re/10-references.md` carried a hand-maintained alphabetical bibliography whose own header said *"Phase B will switch to natbib + `refs.bib` per AUTHORING §1.11; until then, manual list."* That switch happened — the paper renders natbib numbered references (`[1] Cheung, Simchi-Levi, Zhu...`), verified against the built PDF — but neither the file nor its note was removed, so the source tree read as though a manual list were live. `bin/build`'s bibliography branch short-circuits before `render_segment`, so the file was never rendered and this cost nothing in the submitted paper; the risk was a future agent maintaining or trusting it.
+
+Archived to `_archive/references-manual-list-2026-05-07.md` rather than deleted, and replaced with the stub convention paper 01 already uses. Kept because several entries carry journal / publisher / edition detail that looks *better* than the corresponding `refs/entries/` YAML — the same field-hygiene direction as the stray relata emission found today (umbrella `PIPELINE-TODO.md` §F7). Anyone landing §F7 should read that archived list as a third data point.
+
+**README advertised manifests that do not exist** — `OUT.full-paper.md` and `OUT.neurips-2026-paper.md`, both migration-era and archived, plus "currently bootstrapping the segmented layout." There is one live manifest. Fixed.
+
+**As-submitted state pinned.** Tag `submitted/neurips-2026` at `38463e2` (last content commit before submission), plus `submitted-neurips-2026.pdf` — a frozen blind build under a stem no manifest owns, so `bin/build` cannot clobber it. The tracked `unified-rl-neurips-2026.pdf` is regenerated on every run (overwritten twice on 2026-07-29 alone) and is therefore not a record of anything.
+
+*Basis for calling the current source as-submitted:* no source commits between 2026-05-07 and 2026-07-29 except the 2026-05-22 `meta.md` author-info edit, which only affects `--preprint` / `--final` renders. Cross-checked by word-frequency comparison against the stamped non-anon copy in `~/Documents/submitted-papers/`: all content phrases match; differences confined to author block, stamp banner, preprint footer. One token count (`Vmax`, 80 vs 78 raw occurrences) resisted full accounting and traced to math-glyph extraction differences in the flattened stamped PDF rather than content — every surrounding phrase and every other body token matches exactly. Residual caveat: OpenReview records the submission as *modified 27 May 2026*; no source commit exists in that window, so a re-upload would have come from this same source, but the PDF downloadable from OpenReview remains the authoritative artifact.
+
+---
+
 ## 2026-05-07 — VT-unification spike + integration: BoBW closes §6's "open question"
 
 Joseph requested launching a serious Opus spike on the §6 "open question whether the per-round-identity route can match the T^{2/3} continuous-variation rate, or whether the regimes are structurally distinct." Spike launched with the AGENTS §5.4 trichotomy framing pointing at the H4 archived report as direct prior context. Agent did substantial mathematical work (110 lines of substantive reasoning visible in transcript reconstruction), got stuck on the report-write step due to harness Write restrictions, returned the full report content as text via task notification once unstuck-and-killed. Report saved to `spikes/VT-unification/report.md` and archived to `_archive/spikes/VT-unification/` per AGENTS §4.2 step 7 once integration verified.

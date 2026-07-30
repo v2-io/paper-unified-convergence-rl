@@ -1,3 +1,8 @@
 .DS_Store
 .build/
 *.prior.pdf
+
+# Emitted bib. `bin/build` copies the build's bib out as
+# <stem>.extracted.bib (tracked); a bare refs.bib at the paper root is a
+# stray from running `bin/refs emit` / `bin/relata emit` here directly.
+refs.bib
